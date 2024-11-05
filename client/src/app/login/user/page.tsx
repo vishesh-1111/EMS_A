@@ -1,41 +1,89 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Label } from "../../../components/ui/label";
 import { Input } from "../../../components/ui/input";
 import { cn } from "@/lib/utils";
-import {
-  IconBrandGithub,
-  IconBrandGoogle,
-  IconBrandOnlyfans,
-} from "@tabler/icons-react";
+import { IconBrandGithub, IconBrandGoogle, IconBrandOnlyfans } from "@tabler/icons-react";
 
-export default function SignupFormDemo() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+export default function UserLoginForm() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted");
+    setIsLoading(true);
+    setErrorMessage(""); // Reset error message
+    
+    const formData = {
+      email,
+      password,
+    };
+
+    console.log('called');
+      const response = await fetch("http://localhost:5000/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+        credentials: "include",
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        setErrorMessage(errorData.message || "Login failed. Please try again.");
+        return;
+      }
+      
+      
+      const data = await response.json();
+      console.log(data);
+      
+    
   };
+
   return (
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
-      <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
-        User Login
-      </h2>
-    
-
+      <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">User Login</h2>
       <form className="my-8" onSubmit={handleSubmit}>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="email">Email Address</Label>
-          <Input id="email" placeholder="projectmayhem@fc.com" type="email" />
-        </LabelInputContainer>
-        <LabelInputContainer className="mb-4">
-          <Label htmlFor="password">Password</Label>
-          <Input id="password" placeholder="••••••••" type="password" />
+          <Input
+            id="email"
+            placeholder="projectmayhem@fc.com"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
         </LabelInputContainer>
 
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="password">Password</Label>
+          <Input
+            id="password"
+            placeholder="••••••••"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </LabelInputContainer>
+
+        {errorMessage && (
+          <div className="text-red-500 text-sm mb-4">
+            <p>{errorMessage}</p>
+          </div>
+        )}
+
         <button
-          className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+          className={`bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]`}
           type="submit"
+          disabled={isLoading}
         >
-          Login &rarr;
+          {isLoading ? "Loading..." : "Login "}
           <BottomGradient />
         </button>
 

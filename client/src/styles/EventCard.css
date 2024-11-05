@@ -1,0 +1,57 @@
+.card {
+    background-color: #fff; /* White background */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Light shadow for the card */
+    overflow: hidden; /* Hide overflow content */
+    width: 300px; /* Fixed width for the card */
+    transition: box-shadow 0.3s ease; /* Smooth transition for hover shadow */
+    margin: 20px;
+}
+
+/* Image inside card */
+.card img {
+    width: 100%; /* Make image fill the card */
+    height: 200px; /* Fixed height for the image */
+    object-fit: cover; /* Make sure the image doesn't stretch */
+}
+
+/* Title section */
+.card .title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333; /* Dark color for visibility */
+    margin: 15px;
+}
+
+/* Body section */
+.card .body {
+    font-size: 16px;
+    color: #666; /* Light grey color for text */
+    margin: 0 15px 20px; /* Padding for body content */
+    line-height: 1.5;
+}
+
+/* View Button */
+.card .view-btn {
+    display: inline-block;
+    text-align: center;
+    padding: 10px 20px;
+    background-color: #007bff; /* Blue color */
+    color: white;
+    text-decoration: none; /* Remove underline from link */
+    border-radius: 5px;
+    font-size: 16px;
+    margin: 0 15px 15px; /* Margin below the button */
+    transition: box-shadow 0.3s ease, background-color 0.3s ease; /* Smooth transition */
+}
+
+/* Button Hover Effect */
+.card .view-btn:hover {
+    background-color: #0056b3; /* Darker blue */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Shadow effect on hover */
+}
+
+/* Optional: Card on hover - subtle effect */
+.card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Increase shadow on hover */
+}

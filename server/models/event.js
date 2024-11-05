@@ -6,6 +6,10 @@ const eventSchema = new mongoose.Schema({
         required : true
     },
 
+    path : {
+        type : String,
+    },
+
     startTime: {
         type: Date,
         required: true
@@ -58,13 +62,14 @@ const eventSchema = new mongoose.Schema({
     
 });
 
+
 eventSchema.pre('save', function(next) {
     const totalSeats = this.totalseats;
     const vipSeats = this.ticketprice.vip;
     const standardSeats = this.ticketprice.standard;
 
-    if (vipSeats + standardSeats > totalSeats) {
-        return next(new Error('The sum of VIP and standard seats cannot exceed total seats.'));
+    if (vipSeats + standardSeats !== totalSeats) {
+        return next(new Error('The sum of VIP and standard seats must be equal total seats.'));
     }
     next();
 });
@@ -74,3 +79,5 @@ const event=mongoose.model('event',eventSchema);
 module.exports={
     event,
 }
+
+

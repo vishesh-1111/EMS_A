@@ -16,13 +16,14 @@ eventRouter
    return event;
 })
   
-.post('/',isAdmin,async(req,res)=>{
+.post('/',async(req,res)=>{
   const newEventData = {
     ...req.body, 
     createdby: req.admin._id 
 };
 
   const thisblog=  await blog.create(newEventData);
+  console.log(newEventData);
 })
 
 .delete('/:id', isAdmin, async (req, res) => {

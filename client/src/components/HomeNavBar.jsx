@@ -9,10 +9,10 @@ export default function HomeNavbar() {
       <Navbar className="top-2" />
     </div>
   );
-}
+} 
 
-function Navbar({ className }: { className?: string }) {
-  const [active, setActive] = useState<string | null>(null);
+function Navbar({ className }) {
+  const [active, setActive] = useState(null);
   return (
     <>
 

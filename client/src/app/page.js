@@ -1,6 +1,7 @@
 "use client"
 import './globals.css'
 import HomeNavBar from '../components/HomeNavBar';
+import   RenderEvents from '../components/RenderEvents'
 
 
 const MainContent = () => (
@@ -9,9 +10,15 @@ const MainContent = () => (
 );
 export default function HomePage () {
   return (
-    <div>
-    <HomeNavBar />
-    <MainContent />
+    <>
+      <div>
+        <HomeNavBar>
+        </HomeNavBar>
+      </div>
+      <RenderEvents>
+     </RenderEvents>
+       <div >
   </div>
+    </>
   );
 };
