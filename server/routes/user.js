@@ -1,58 +1,55 @@
 const {Router}  = require('express');
 const UserRouter = Router();
-const {User} = require('../models/user');
+const {user} = require('../models/user');
 const { createHmac} = require('node:crypto');
 var jwt = require('jsonwebtoken');
-const { error } = require('node:console');
-UserRouter
+const cookie = require('cookie');
 
-.post('/signup',async(req,res)=>{
-  console.log('hiipro');
-   const {name,email,password}=req.body; 
-   try {
-    const newUser = await User.create({ name, email, password });
-    res.status(201).json({ success: true, user: newUser });
-} catch (error) {
-    if (error.code === 11000) {
-        return res.status(409).json({
-            success: false,
-            message: "Email already in use!",
-        });
-    }
-}
-  
-})
-   .post('/login',async(req,res)=>{
-     const {email , password} = req.body;
-     const user = await User.findOne(
+
+UserRouter
+.get('/temp',async(req,res)=>{
+  console.log('hi');
+    if(!req.user)return res.status(401).json(
       {
-        email : email,
-      } 
-    )
-     
-    if(!user){
-      return res.status(404).json({
-        success: false,
-        message: "User not found!",
-      });
-      
-    }
-    const salt = user.salt;
-    const name = user.name;
-    const hash = createHmac('sha256', salt)
-    .update(password)
-    .digest('hex');
-    if(hash===user.hash){
-      const payload = user.toObject();
-      var token = jwt.sign(payload,'secret'); 
-      res.cookie("token", token, {
-        httpOnly: false,  // Prevents access to cookie via JavaScript
-        secure: true,   // Set to `true` in production if using HTTPS
-        sameSite: "None", // Required for cross-origin cookies
-        maxAge: 24 * 60 * 60 * 1000, // Cookie expires in 1 day
-        path: "/", // The cookie will be sent to all routes
-      });
-       return res.status(200).json({
+        "message" : "User not logged in",
+      }
+    );
+   return res.status(200).json(req.user);
+})
+
+.post('/login',async(req,res)=>{
+  const {email , password} = req.body;
+  const User = await user.findOne(
+    {
+      email : email,
+    } 
+  )
+  if(!User){
+    return res.status(404).json({
+      success: false,
+      message: "User not found!",
+    });
+    
+  }
+  const salt = User.salt;
+  const name = User.name;
+  const hash = createHmac('sha256', salt)
+  .update(password)
+  .digest('hex');
+  if(hash===User.hash){
+    const payload = User.toObject();
+    var token = jwt.sign(payload,'secret'); 
+    res.setHeader(
+      "set-cookie",
+      cookie.serialize("token",token,{
+        httpOnly : true,
+        secure: true,
+        maxAge : 60*60,
+        sameSite : 'none',
+        path :  "/",
+      })
+      ) 
+      return res.status(200).json({
         success: true,
         message: "Login successful",
         token: token, // Include token in the response body if needed
@@ -63,13 +60,29 @@ UserRouter
       return res.status(401).json({
         success: false,
         message: "Incorrect email or password!",
-    });
+      });
     }
-
-   })
-   .get('/logout',(req,res)=>{
+    
+  })
+  .get('/logout',(req,res)=>{
+    console.log('hi');
     res.cookie('token','',{maxAge:1});
     res.status(204).send();
-})
-
-module.exports = UserRouter
+  })
+  
+  .post('/signup',async(req,res)=>{
+     const {name,email,password}=req.body; 
+     try {
+      const newUser = await user.create({ name, email, password });
+      res.status(201).json({ success: true, user: newUser });
+  } catch (error) {
+      if (error.code === 11000) {
+          return res.status(409).json({
+              success: false,
+              message: "Email already in use!",
+          });
+      }
+  }
+    
+  })
+  module.exports = UserRouter

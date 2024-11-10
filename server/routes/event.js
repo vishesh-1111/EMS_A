@@ -1,19 +1,18 @@
 const express = require('express');
 const eventRouter = express.Router();
 const {event} = require('../models/event');
-const path = require('path');
 const {isAdmin } = require('../middlewares/authentication');
 
 eventRouter
 .get('/',async(req,res)=>{
      const allevents = await event.find({});
+     return res.status(200).json(allevents);
+    })
     
-     return allevents;
-  })
-
- .get('/:id',async(req,res)=>{
-   const event =await event.findById(req.params.id);
-   return event;
+  .get('/:id',async(req,res)=>{
+    console.log('hi');
+   const ob =await event.findById(req.params.id);
+   return  res.json(ob);
 })
   
 .post('/',async(req,res)=>{
@@ -23,7 +22,7 @@ eventRouter
 };
 
   const thisblog=  await blog.create(newEventData);
-  console.log(newEventData);
+
 })
 
 .delete('/:id', isAdmin, async (req, res) => {

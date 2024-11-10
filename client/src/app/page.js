@@ -1,24 +1,20 @@
-"use client"
-import './globals.css'
-import HomeNavBar from '../components/HomeNavBar';
-import   RenderEvents from '../components/RenderEvents'
+"use client";
+import './globals.css';
+import { useState } from 'react';  
+import NavBar from '../components/NavBar';
+import Dashboard from '../components/dashboard';
+import RenderAllEvents from '../components/Events'; 
 
+export default function HomePage(){
+  const [user, setUser] = useState(null); 
 
-const MainContent = () => (
-  <div className="mt-20 p-4">
-  </div>
-);
-export default function HomePage () {
   return (
-    <>
-      <div>
-        <HomeNavBar>
-        </HomeNavBar>
-      </div>
-      <RenderEvents>
-     </RenderEvents>
-       <div >
-  </div>
-    </>
+    <div>
+      <NavBar user={user} setUser={setUser} /> 
+      <Dashboard user={user} setUser={setUser} /> 
+      <RenderAllEvents /> 
+    </div>
   );
-};
+}
+
+

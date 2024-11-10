@@ -47,9 +47,9 @@ UserSchema.pre('save',function(next){
     this.password = undefined;
     next();
 })
-const User=mongoose.model('user',UserSchema);
+const user=mongoose.model('user',UserSchema);
 
 
 module.exports={
-    User,
+    user,
 }

@@ -3,14 +3,14 @@ import React, { useState } from "react";
 import { Label } from "../../../components/ui/label";
 import { Input } from "../../../components/ui/input";
 import { cn } from "@/lib/utils";
-import { IconBrandGithub, IconBrandGoogle, IconBrandOnlyfans } from "@tabler/icons-react";
-
+import { Navigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 export default function UserLoginForm() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
@@ -20,8 +20,6 @@ export default function UserLoginForm() {
       email,
       password,
     };
-
-    console.log('called');
       const response = await fetch("http://localhost:5000/user/login", {
         method: "POST",
         headers: {
@@ -36,13 +34,9 @@ export default function UserLoginForm() {
         setErrorMessage(errorData.message || "Login failed. Please try again.");
         return;
       }
-      
-      
-      const data = await response.json();
-      console.log(data);
-      
-    
-  };
+      console.log('redirecting');
+      router.push('/');
+    };
 
   return (
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">

@@ -22,15 +22,17 @@ function Navbar({ className }) {
           className
         )}
       >
+
+        
         <Menu setActive={setActive}>
-          <MenuItem setActive={setActive} active={active} item="Login">
+          <MenuItem setActive={setActive} active={active} item="Logout">
             <div className="flex flex-col space-y-4 text-sm">
-              <HoveredLink href="/login/user">User</HoveredLink>
-              <HoveredLink href="/login/admin">Admin</HoveredLink>
+              <HoveredLink href="http://localhost:5000/user/logout">User</HoveredLink>
+              <HoveredLink href="/login/logout">Admin</HoveredLink>
             </div>
           </MenuItem>
 
-          <MenuItem setActive={setActive} active={active} item="Signup">
+          <MenuItem setActive={setActive} active={active} item="Profile">
             <div className="flex flex-col space-y-4 text-sm">
               <HoveredLink href="/signup/user">User</HoveredLink>
             </div>
