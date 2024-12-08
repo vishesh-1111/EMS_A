@@ -9,12 +9,21 @@ eventRouter
      return res.status(200).json(allevents);
     })
     
-  .get('/:id',async(req,res)=>{
-    console.log('hi');
-   const ob =await event.findById(req.params.id);
-   return  res.json(ob);
-})
-  
+    .get('/:id', async (req, res) => {
+      try {
+        console.log('hi');
+        const ob = await event.findById(req.params.id);
+        
+        if (!ob) {
+          return res.status(404).json({ message: 'Event not found' });
+        }
+    
+        return res.json(ob);
+      } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Server error' });
+      }
+    })
 .post('/',async(req,res)=>{
   const newEventData = {
     ...req.body, 
@@ -26,11 +35,14 @@ eventRouter
 })
 
 .delete('/:id', isAdmin, async (req, res) => {
+
+  console.log('hiippp');
   try {
-      const deletedEvent = await event.findByIdAndDelete(req.params.id);
+      const deletedEvent = await event.findById(req.params.id);
       if (!deletedEvent) {
           return res.status(404).json({ message: 'Event not found' });
       }
+      deletedEvent.isDeleted = true;
       res.json({ message: 'Event deleted successfully' });
   } catch (err) {
       res.status(400).json({ message: err.message });
@@ -38,6 +50,7 @@ eventRouter
 })
 
  .put('/:id', isAdmin, async (req, res) => {
+  console.log(req.body);
   try {
       const updatedEvent = await event.findByIdAndUpdate(req.params.id, req.body, { new: true });
       if (!updatedEvent) {

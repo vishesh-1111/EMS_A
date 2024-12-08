@@ -25,18 +25,18 @@ const isAdmin = (req, res, next) => {
       return next();
   }
 
-   jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
-      if (err) {
-          return next();
-      }
+  //  jwt.verify(token, 'secret', (err, payload) => {
+  //     if (err) {
+  //         return next();
+  //     }
 
-      if (payload.role !== 'admin') {
-          return next();
-      }
-      req.admin=payload;
-      next();
-    });
-  };
+  //     if (payload.role !== 'admin') {
+  //         return next();
+  //     }
+  //    req.admin=payload;
+        next();
+  //   });
+   };
 
     module.exports= {
         isUser,

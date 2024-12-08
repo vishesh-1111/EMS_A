@@ -1,6 +1,6 @@
-"use client";
+ "use client";
 import './globals.css';
-import { useState } from 'react';  
+import { useEffect, useState } from 'react';  
 import NavBar from '../components/NavBar';
 import Dashboard from '../components/dashboard';
 import RenderAllEvents from '../components/Events'; 
@@ -12,7 +12,7 @@ export default function HomePage(){
     <div>
       <NavBar user={user} setUser={setUser} /> 
       <Dashboard user={user} setUser={setUser} /> 
-      <RenderAllEvents /> 
+      <RenderAllEvents user={user} /> 
     </div>
   );
 }

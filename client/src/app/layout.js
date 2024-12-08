@@ -1,6 +1,5 @@
-import NavbarDemo from '../components/HomeNavBar';
-import './globals.css'
 
+import './globals.css'
 const Layout = ({ children }) => {
   return (
     <html lang="en">

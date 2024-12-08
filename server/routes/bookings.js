@@ -8,7 +8,8 @@ const { admin } = require('../models/admin');
 BookingsRouter
 .get('/',async(req,res)=>{
   if(!req.user)return res.status(404).json({message : 'user 404'});
-   try {
+  try {
+     console.log('called');
     const userid = `${req.user._id}`
     console.log(userid);
     const userBookings = await booking.find({userid:userid});

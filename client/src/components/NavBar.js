@@ -1,13 +1,11 @@
-
-import  CheckAuth from '../components/checkauth'
 import HomeNavbar from '../components/HomeNavBar'
 import AdminNavbar from '../components/AdminNavbar'
 import UserNavbar from '../components/UserNavbar'
 import { useEffect } from 'react'
 
+
 export default function NavBar({user,setUser}){
-    console.log('inside navbar'); 
-    console.log(user);
+
    
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +27,7 @@ export default function NavBar({user,setUser}){
     return (
         <>    
              {user === null && <HomeNavbar />}
-            {user?.role === 'user' && <UserNavbar />}
+            {user?.role === 'user' && <UserNavbar user={user} setUser={setUser}/>}
             {user?.role === 'admin' && <AdminNavbar />} 
         </>
     );

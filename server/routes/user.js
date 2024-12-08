@@ -8,13 +8,18 @@ const cookie = require('cookie');
 
 UserRouter
 .get('/temp',async(req,res)=>{
-  console.log('hi');
     if(!req.user)return res.status(401).json(
       {
         "message" : "User not logged in",
       }
     );
    return res.status(200).json(req.user);
+})
+
+.get('/',async(req,res)=>{
+  console.log('fetching....');
+  const users =await user.find({});
+  return res.json(users);
 })
 
 .post('/login',async(req,res)=>{
@@ -67,7 +72,7 @@ UserRouter
   .get('/logout',(req,res)=>{
     console.log('hi');
     res.cookie('token','',{maxAge:1});
-    res.status(204).send();
+    res.status(200).send();
   })
   
   .post('/signup',async(req,res)=>{

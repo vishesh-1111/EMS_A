@@ -1,11 +1,14 @@
 const mongoose =require('mongoose');
 
+
+
+
 const eventSchema = new mongoose.Schema({
     name : {
         type : String,
         required : true
     },
-
+    
     path : {
         type : String,
     },
@@ -54,6 +57,11 @@ const eventSchema = new mongoose.Schema({
         required : false
     },
 
+    isDeleted : {
+        type : Boolean,
+        required : true,
+        default : false
+    },
     createdby : {
          type : mongoose.Schema.Types.ObjectId,
          ref : 'admin',
