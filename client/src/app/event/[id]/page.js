@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation';
 import BookEvent from '../../../components/BookEvent';
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 async function fetchEventData(id) {
-  const response = await fetch(`${serverUrl}/${id}`, {
+  const response = await fetch(`${serverUrl}/events/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -16,7 +16,7 @@ async function fetchEventData(id) {
   return result;
 }
 async function fetchsessionData(id) {
-  const response = await fetch(`${serverUrl}/${id}`, {
+  const response = await fetch(`${serverUrl}/reservations/event/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
