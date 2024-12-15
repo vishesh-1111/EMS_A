@@ -68,5 +68,5 @@ app.use('/payment',PaymentRouter);
 app.use('/reservations',Reservationrouter);
 
 server.listen(port, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });
