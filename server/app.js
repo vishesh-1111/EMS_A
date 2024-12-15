@@ -15,7 +15,7 @@ const BookingsRouter = require('./routes/bookings');
 const { PaymentRouter } = require('./routes/payment');
 const { isUser, isAdmin } = require('./middlewares/authentication');
 const {connectDB} = require('./mongodb/connection');
-const PORT = 5000;
+const port = process.env.PORT || 5000;
 
 connectDB(dburl);
 app.use(bodyParser.json()); 
@@ -67,6 +67,6 @@ app.use('/bookings',BookingsRouter);
 app.use('/payment',PaymentRouter);
 app.use('/reservations',Reservationrouter);
 
-server.listen(PORT, () => {
+server.listen(port, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
