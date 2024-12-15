@@ -9,7 +9,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
     connectionStateRecovery : {},
      cors: {
-       origin: 'https://my-first-react-app-jade.vercel.app/', 
+       origin: 'https://my-first-react-app-jade.vercel.app', 
        methods: ['GET', 'POST'],
        credentials: true,
      },
