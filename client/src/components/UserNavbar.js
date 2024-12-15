@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import { HoveredLink, Menu, MenuItem, ProductItem } from "./ui/navbar-menu";
+import { HoveredLink, Menu, MenuItem } from "./ui/navbar-menuj";
 import { cn } from "@/lib/utils";
 
-export default function HomeNavbar({user,setUser}) {
+export default function HomeNavbar({user}) {
   return (
     <div className="relative w-full flex items-center justify-center">
       <Navbar user={user} className="top-2" />

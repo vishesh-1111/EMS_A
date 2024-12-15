@@ -57,29 +57,29 @@ async function fetchEventData(id) {
 
   
   
-    if (history.length === 0) {
-      return <h1>No Active Bookings yet</h1>;
-    }
-  
     useEffect(() => {
       console.log('useEffect');
-            const fetchEventDetails = history.map(async (bookedticket, index) => {
+      const fetchEventDetails = history.map(async (bookedticket) => {
         const event = await fetchEventData(bookedticket.eventid);
         if (event) {
-            console.log(event);
+          console.log(event);
             return {
               _id: event._id,
               name: event.name,
               category: event.category,
-            location: event.location,
-            bookingDate: bookedticket.bookingDate,
-            startTime: event.startTime,
-            standardTickets: bookedticket.standardTickets,
-            vipTickets: bookedticket.vipTickets,
-          };
+              location: event.location,
+              bookingDate: bookedticket.bookingDate,
+              startTime: event.startTime,
+              standardTickets: bookedticket.standardTickets,
+              vipTickets: bookedticket.vipTickets,
+            };
+          }
+        });
+        
+        if (history.length === 0) {
+          return <h1>No Active Bookings yet</h1>;
         }
-      });
-    
+      
       Promise.all(fetchEventDetails).then((result) => {
         const currenthistory = result.filter(item => (item !== undefined&&(!item.isDeleted)));
         setCurrentuserhistory(currenthistory);
@@ -107,7 +107,7 @@ async function fetchEventData(id) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {currentuserhistory.map((ticket, index) => {
+                {currentuserhistory.map((ticket) => {
                   
                     return (
                     <StyledTableRow key={ticket._id}>
@@ -144,7 +144,7 @@ async function fetchEventData(id) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {pastuserhistory.map((ticket, index) => {
+                {pastuserhistory.map((ticket) => {
                   
                     return (
                     <StyledTableRow key={ticket._id}>

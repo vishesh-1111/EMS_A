@@ -30,7 +30,7 @@ export default function RenderUsers(){
             };
             GetUsers();
         }
-  }, []);  
+  }, [users]);  
 
    if(!users){
     return(

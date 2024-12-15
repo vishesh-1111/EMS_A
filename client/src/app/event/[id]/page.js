@@ -47,7 +47,7 @@ export default function EventPage({}) {
     };
     fetchSession();
 
-  }, []); 
+  }, [id]); 
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -56,7 +56,7 @@ export default function EventPage({}) {
     };
 
     fetchEvent();
-  }, []); 
+  }, [id]); 
 
 
   const handleStandardTicketChange = (e) => {

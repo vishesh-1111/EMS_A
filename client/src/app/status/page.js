@@ -35,7 +35,7 @@ export default function RenderReservationStatus(){
   };
     
    
-    const result = fetchReservations();
+   if(!Reservations) fetchReservations();
     
 
     
@@ -44,7 +44,7 @@ export default function RenderReservationStatus(){
      console.log('Admin socket connected:', socket.connected,socket.id); 
      
     });
-     socket.on('reservationmade', (event, callback) => {
+     socket.on('reservationmade', (event) => {
        console.log('reccc');
        console.log('Admin received reservation event:', event);
 
@@ -96,7 +96,7 @@ export default function RenderReservationStatus(){
     });
 
   };
-  }, []); 
+  }, [Reservations,isconnected]); 
   
 
    

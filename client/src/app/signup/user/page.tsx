@@ -36,7 +36,7 @@ export default function SignupFormDemo() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+         await response.json();
         setModalOpen(true);
         return;
       }

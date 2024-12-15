@@ -57,7 +57,7 @@ export default function EventPage() {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    const response = await fetch(`http://localhost:5000/events/${id}`, {
+     await fetch(`http://localhost:5000/events/${id}`, {
         method: 'PUT',  // Using PUT to replace the entire document
         headers: {
           'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ export default function EventPage() {
         },
       });
     }
-  }, [event]);
+  }, [id,event]);
 
   return (
     <form onSubmit={handleSubmit} style={styles.form}>

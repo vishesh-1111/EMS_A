@@ -4,7 +4,7 @@ import React from 'react';
 export function Card({ event }) {
   return (
     <div className="border p-4 rounded-lg shadow-lg">
-      <img src={event.image} alt={event.title} className="w-full h-48 object-cover rounded-md" />
+      {/* <img src={event.image} alt={event.title} className="w-full h-48 object-cover rounded-md" /> */}
       <h3 className="mt-2 text-lg font-semibold">{event.title}</h3>
       <a href="#" className="mt-4 inline-block px-4 py-2 bg-blue-500 text-white rounded-lg text-center hover:bg-blue-700 transition-colors">
         View Details 
