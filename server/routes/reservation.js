@@ -1,6 +1,7 @@
 const {Router}  = require('express');
 const Reservationrouter = Router();
 const {reservation} = require('../models/reservation');
+const { io } = require('../socketio');
 
 Reservationrouter
 .get('/',async(req,res)=>{
@@ -28,23 +29,60 @@ Reservationrouter
     return res.status(500).json({ message: 'Server error' });
   }
 })
+.get('/event/:id',async(req,res)=>{
+  const eventid = req.params.id;
+  const session = req.cookies[`${eventid}`];
+  if(session){
+    return res.status(200).json(JSON.parse(session));
+  }
+  else return res.status(404).json({
+    message : "reservation session not found"
+  });
+})
 .post('/',async(req,res)=>{
     console.log('reservation post request received');
     const body = req.body;
+    console.log(body);
     const userReservation = new reservation({
       eventid : body.eventid,
       userid  : req.user._id,
       vipTickets : body.vipTickets,
       standardTickets : body.standardTickets,
+      cost : body.cost
     });
     await userReservation.save();
     userReservation.user=req.user;
-    return res.status(200).json({
+    
+    res.cookie(`${body.eventid}`,JSON.stringify(userReservation),{
+      sameSite : 'none',
+      expires : userReservation.expiresAt,
+      secure : true,
+      httpOnly : true,
+    });
+
+    io.emit('reservationmade',userReservation,()=>{
+      console.log('Admin ko pata chal gaya ki reservation create ho gya hai');
+     });
+
+    setTimeout(async() => {
+ const UserReservation = await reservation.findById(userReservation._id);
+ if(UserReservation.status==='pending'){
+   userReservation.status='failed';
+   userReservation.isActive= false;
+   userReservation.save();
+   io.emit('reservationexpired',userReservation,()=>{
+     console.log('Admin ko pata chal gaya ki reservation expire ho gya hai');
+    });
+  }
+    
+  }, userReservation.expiresAt - Date.now());
+  
+     res.status(200).json({
         message: "Reservation made",
         success: true,
-        token: 'abcd',
         reservation: userReservation,
     });
+   
 
 })
 
@@ -64,7 +102,7 @@ Reservationrouter
     })
 
     if(!userReservation){
-      res.status(404).json({
+     return res.status(404).json({
         message : "Reservation not found",
       })
     }
@@ -85,8 +123,6 @@ Reservationrouter
       reservation: userReservation,
   });
 });
-
-
 
 module.exports = Reservationrouter
 

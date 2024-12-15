@@ -1,6 +1,7 @@
 "use client"
-import { useEffect,useState } from "react"
+import { useState,useEffect } from "react";
 async function fetchUsers() {
+
   const response = await fetch(`http://localhost:5000/user`, {
     method: "GET",
     headers: {

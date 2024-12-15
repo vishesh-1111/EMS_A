@@ -2,66 +2,31 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { socket } from '../socket.js';
+import { useNavigate } from 'react-router-dom';
 
-export default function BookEvent({ event, cost, vipTickets, standardTickets }) {
+
+export default function BookEvent({ event, cost, vipTickets,
+  standardTickets,remainingSeconds,userReservation }) {
   const [cardNumber, setCardNumber] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
   const [message, setMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const router = useRouter();
-  const [seconds, setSeconds] = useState(100);
+  const [seconds, setSeconds] = useState(remainingSeconds||30);
   const [isRunning, setIsRunning] = useState(true);
-  const [reservation, setReservation] = useState(null);
+  const [reservation, setReservation] = useState(userReservation);
 
-  const HandleReservation = async (status, socket) => {
-    console.log('is socket connected?',socket.connected);
+ 
 
-    if(!socket.connected)return 1;
-
-    console.log('handle callled ');
-    console.log('status', status);
-    const response = await fetch('http://localhost:5000/reservations/update', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({
-        status,
-        event,
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to free reservation');
+  useEffect(() => {
+    const HandleConnection = () => {
+     console.log('socket connected ?',socket.connected);
     }
-    const res = await response.json();
-    const data = res.reservation;
 
-    console.log('Reservation Handled successfully');
-    socket.emit('reservationUpdated', data);
-    socket.disconnect();
-
-    return 1;
-  };
-
-  useEffect(() => {
     socket.connect();
-    socket.on('connect', () => {
-      console.log('user socket connected:', socket.connected);
-    });
-
-    return async () => {
-      // Make sure HandleReservation is only called once by checking navigation flag
-     
-        const result = await HandleReservation('failed', socket);
-        console.log('socket disconnected');
-        console.log('Socket disconnected:', socket.connected);
+    socket.on('connect',HandleConnection);
       
-    };
-  }, []);
-
-  useEffect(() => {
+    console.log(cost);
     const PostReservation = async () => {
       try {
         const response = await fetch('http://localhost:5000/reservations', {
@@ -74,34 +39,37 @@ export default function BookEvent({ event, cost, vipTickets, standardTickets }) 
             eventid: event._id,
             vipTickets: vipTickets,
             standardTickets: standardTickets,
+            cost : cost,
           }),
         });
 
         if (!response.ok) {
           throw new Error('Failed to create reservation');
         }
-        const data = await response.json();
-        console.log('data', data.reservation);
-
-        setReservation(data.reservation);
-        console.log('setted', reservation);
-      } catch (error) {
-        console.error('Error posting reservation:', error);
+        const userR = await response.json();
+        setReservation(userR.reservation);
       }
-    };
-
-    if (reservation === null) PostReservation();
-  }, [reservation]);
-
-  useEffect(() => {
-    if (reservation) {
-      console.log('useeffect ran');
-      console.log('emitted');
-      socket.emit('clientcall', reservation, (response) => {
-        console.log(response.status);
-      });
+     catch (error) {
+      console.error('Error posting reservation:', error);
     }
-  }, [reservation]);
+  }
+    
+    if(!reservation){
+      console.log('posting...');
+      PostReservation();
+    }
+   
+   return ()=>{
+       socket.off('connect',HandleConnection);
+       socket.disconnect();
+    }
+  }, []);
+
+
+  
+
+  // Payment script
+
 
   useEffect(() => {
     let interval;
@@ -114,6 +82,7 @@ export default function BookEvent({ event, cost, vipTickets, standardTickets }) 
       clearInterval(interval);
       setIsRunning(false);
       alert("Time's up!");
+      router.push('/');
     }
 
     return () => clearInterval(interval);
@@ -148,11 +117,9 @@ export default function BookEvent({ event, cost, vipTickets, standardTickets }) 
 
       console.log(response);
       if (response.ok) {
-    
-          const result = await HandleReservation('success', socket);
           setMessage('Payment Successful!');
           alert('success');
-          router.push('/'); // Ensure that navigation happens after handling reservation
+          router.push('/'); 
 
       } else {
         setMessage(`Payment Failed: ${response.data.message}`);
@@ -164,12 +131,10 @@ export default function BookEvent({ event, cost, vipTickets, standardTickets }) 
     }
   };
 
-  if (!isRunning) {
-    return router.push('/');
-  }
 
   return (
     <div>
+    <div>{reservation&&reservation._id}</div>
       <div>
         <h1>Timer: {formatTime(seconds)}</h1>
       </div>
@@ -304,4 +269,10 @@ export default function BookEvent({ event, cost, vipTickets, standardTickets }) 
       </div>
     </div>
   );
+
+return(
+  <div>
+    HI
+  </div>
+)
 }

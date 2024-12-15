@@ -15,15 +15,39 @@ async function fetchEventData(id) {
   const result = await response.json();
   return result;
 }
+async function fetchsessionData(id) {
+  const response = await fetch(`http://localhost:5000/reservations/event/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  const result = await response.json();
+
+  if(response.ok)return result;
+  else return null;
+}
 
 export default function EventPage({}) {
+  const [existingSession,setExistingSession] = useState(null);
   const [event, setEvent] = useState(null);
   const [standardTickets, setStandardTickets] = useState(0);
   const [vipTickets, setVipTickets] = useState(0);
   const [cost, setCost] = useState(0);
   const [isBooking, setIsBooking] = useState(false); // New state to track booking status
-
   const { id } = useParams();
+  
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      const eventSessiondata = await fetchsessionData(id);
+      setExistingSession(eventSessiondata);
+    };
+    fetchSession();
+
+  }, []); 
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -32,7 +56,8 @@ export default function EventPage({}) {
     };
 
     fetchEvent();
-  }, [id]); 
+  }, []); 
+
 
   const handleStandardTicketChange = (e) => {
     const value = Math.min(e.target.value, availableSeats()); 
@@ -68,6 +93,26 @@ export default function EventPage({}) {
   if (!event) {
     return <div>Loading event...</div>;
   }
+
+  if(existingSession){
+    const expiredDate = new Date(existingSession.expiresAt).getTime();
+    const currentDate =  Date.now();
+
+    console.log(currentDate,expiredDate);
+    const differenceInMilliseconds = expiredDate - currentDate;
+    const remainingSeconds = Math.max(0, differenceInMilliseconds / 1000);
+
+    return(
+      <BookEvent event={event} cost={existingSession.cost}
+       vipTickets={existingSession.vipTickets} 
+       standardTickets={existingSession.standardTickets}
+       remainingSeconds = {remainingSeconds}
+       userReservation = {existingSession}
+       />
+    )
+  }
+
+
 
   return (
     <div style={{ marginTop: '40px', border: '1px solid #e2e8f0', padding: '20px', borderRadius: '8px', backgroundColor: '#fff' }}>

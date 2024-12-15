@@ -47,7 +47,7 @@ UserRouter
     res.setHeader(
       "set-cookie",
       cookie.serialize("token",token,{
-        httpOnly : true,
+        httpOnly : false,
         secure: true,
         maxAge : 60*60,
         sameSite : 'none',

@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 const { faker } = require('@faker-js/faker');
 const {event} = require('../models/event');  // Adjust this path to your Event model file
 
 // MongoDB URI
-const mongoURI = 'mongodb://localhost:27017/db7';
+const mongoURI = process.env.MONGOURL;
 
 // Admin ID to be used for all events
 const adminId = new mongoose.Types.ObjectId('672eefc7d64c770902c1c18c');

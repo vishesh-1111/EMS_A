@@ -1,78 +1,116 @@
 "use client"
 import { useEffect, useState } from 'react'
 import { socket } from '../../socket'
+import { useCookies } from 'next-client-cookies'; // or use 'react-cookie' based on your setup
+import { jwtDecode } from "jwt-decode";
+
 export default function RenderReservationStatus(){
   const [isconnected,Setisconnected] = useState(false);
   const [Reservations,setReservations]= useState(null);
-  const [Changed ,setChanged ] = useState(0);
+  const [decoded] = useState(jwtDecode(useCookies().get('token')));
   
+
+    
+   
   useEffect(() => {
     console.log('triggered');
-    const fetchReservations = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/reservations/active');
-        if (!response.ok) {
-          throw new Error('Failed to fetch reservations');
-        }
-        const data = await response.json();
-        console.log(data);
-        setReservations(data);
-      } catch (error) {
-        console.error('Error fetching reservations:', error);
-      }
-    };
-  
-    if(Reservations===null) fetchReservations(); 
-    if(Changed===1){
-       setChanged(0);
-       fetchReservations();
-    }
-
-  }, [Reservations]); 
-  useEffect(() => {
     if(!isconnected){
-       socket.connect();
+      socket.connect();
+   }
+   const fetchReservations = async () => {
+    try {
+
+      const response = await fetch('http://localhost:5000/reservations/active');
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch reservations');
+      }
+      const data = await response.json();
+      console.log(data);
+      setReservations(data);
+    } catch (error) {
+      console.error('Error fetching reservations:', error);
     }
-    socket.on('connect',()=>{
 
-      Setisconnected(true); 
-      console.log('Admin socket connected:', socket.connected,socket.id); // Debugging connection status
-      
-      socket.on('admincall', (event, callback) => {
-        console.log('reccc');
-        console.log('Admin received reservation event:', event);
-//        if(Reservations!==null){
-          console.log('live',Reservations);
-          setReservations(prevReservations => [...prevReservations, event]);
-  //      }
-      });
-      
-      socket.on('reservationUpdated', (updatedReservation) => {
+  };
+    
+   
+    const result = fetchReservations();
+    
 
-        console.log('Received updated reservation:', updatedReservation);
-  
-        // Update the reservations state based on the updated reservation
-        setReservations(prevReservations => {
-          console.log('prev',prevReservations);
-          return prevReservations.map(reservation =>
-            reservation._id === updatedReservation._id ? updatedReservation : reservation
-          );
-        });
+    
+   socket.on('connect',()=>{
+     Setisconnected(true); 
+     console.log('Admin socket connected:', socket.connected,socket.id); 
+     
+    });
+     socket.on('reservationmade', (event, callback) => {
+       console.log('reccc');
+       console.log('Admin received reservation event:', event);
+
+         console.log('live',Reservations);
+         setReservations(prevReservations => [...prevReservations, event]);
+         console.log('reservations',Reservations)
+
+     });
+
+
+     socket.on('reservationexpired', (updatedReservation) => {
+
+      console.log('Received updated reservation:', updatedReservation);
+
+      setReservations(prevReservations => {
+        console.log('prev',prevReservations);
+        return prevReservations.map(reservation =>
+          reservation._id === updatedReservation._id ? updatedReservation : reservation
+        );
       });
     });
+    socket.on('reservationsuccess', (updatedReservation) => {
 
+      console.log('Received updated reservation:', updatedReservation);
 
-    return () => {
-      socket.disconnect();
-      socket.on('disconnect', () => {
-        console.log('Admin disconnected:');
-        Setisconnected(false);
+      setReservations(prevReservations => {
+        console.log('prev',prevReservations);
+        return prevReservations.map(reservation =>
+          reservation._id === updatedReservation._id ? updatedReservation : reservation
+        );
       });
+    });
+  
+   
+   socket.on('disconnect', () => {
+     console.log('Admin disconnected:');
+     Setisconnected(false);
+   });
 
-    };
-  }, []);
+   return () => {
+    socket.off('disconnect', ()=>{
+      
+    });
+    socket.off('reservationexpired', ()=>{
+      
+    });
+    socket.off('reservationsuccess', ()=>{
+      
+    });
+
+  };
+  }, []); 
+  
+
+   
 
 
+   if(!decoded||decoded.role!=='admin'){
+    return (
+      <div>
+        <h1>
+         Unauthorised!!
+        </h1>
+      </div>
+    )
+   }
 
    if(Reservations===null){
      return (

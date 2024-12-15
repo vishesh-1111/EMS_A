@@ -1,23 +1,21 @@
-const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
+const  {server,io,app} = require('./socketio')
+require('dotenv').config();
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 const cors = require('cors');
-const http = require('http');
-const dburl='mongodb://127.0.0.1:27017/db7';
+const dburl=process.env.MONGOURL;
+console.log(dburl);
+console.log(process.env.NODE_ENV);
 const userrouter = require('./routes/user');
 const adminrouter = require('./routes/admin');
 const { eventRouter } = require('./routes/event');
 const  Reservationrouter  = require('./routes/reservation');
-
 const BookingsRouter = require('./routes/bookings');
 const { PaymentRouter } = require('./routes/payment');
 const { isUser, isAdmin } = require('./middlewares/authentication');
 const {connectDB} = require('./mongodb/connection');
-const {Server} = require('socket.io');
 const PORT = 5000;
-const server = http.createServer(app);
 
 connectDB(dburl);
 app.use(bodyParser.json()); 
@@ -28,14 +26,7 @@ app.use(cors({
   credentials: true,  // Important to allow cookies/auth tokens
   
 }));
-const io = new Server(server, {
- //connectionStateRecovery : {},
-  cors: {
-    origin: 'http://localhost:3000', // Allow WebSocket connections from your Next.js app
-    methods: ['GET', 'POST'],
-    credentials: true,
-  },
-});
+
 
 io.on('connection', (socket) => {
   console.log('A user connected',socket.id);
@@ -62,8 +53,11 @@ io.on('connection', (socket) => {
     console.log('User disconnected');
   });
 });
-
-
+ 
+app.get('/',(req,res)=>{
+  res.send("Hi from server");
+})
+ 
 app.use('/',isUser);
 app.use('/',isAdmin);
 app.use('/user',userrouter);

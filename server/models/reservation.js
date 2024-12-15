@@ -21,24 +21,34 @@ const ReservationSchema = new Schema(
       type: Number,
       default: 0
     },
-    isActive : {
-       type : Boolean,
-       default :true
+    cost : {
+      type : Number,
+      required : true
     },
-
-    status : {
-     type : String,
-     default : 'pending'
+    isActive: {
+      type: Boolean,
+      default: true
+    },
+    status: {
+      type: String,
+      default: 'pending'
     },
     reservationDate: {
       type: Date,
       default: Date.now
+    },
+    expiresAt: {
+      type: Date,
+      default: () => {
+        return new Date(Date.now() + 0.5 * 60 * 1000); 
+      }
     }
   },
   {
     timestamps: true
   }
 );
+
 
 const reservation = mongoose.model('reservation', ReservationSchema);
 
