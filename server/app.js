@@ -20,7 +20,8 @@ const port = process.env.PORT || 5000;
 connectDB(dburl);
 app.use(bodyParser.json()); 
 app.use(cors({
-  origin: "https://my-first-react-app-jade.vercel.app",
+  origin: "https://my-first-react-i2m9hipcy-vishesh-1111s-projects.vercel.app",
+  
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['GET', 'POST','DELETE','PUT','OPTIONS'],
   credentials: true,  // Important to allow cookies/auth tokens
