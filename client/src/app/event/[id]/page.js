@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import BookEvent from '../../../components/BookEvent';
-
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 async function fetchEventData(id) {
-  const response = await fetch(`http://localhost:5000/events/${id}`, {
+  const response = await fetch(`${serverUrl}/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -16,7 +16,7 @@ async function fetchEventData(id) {
   return result;
 }
 async function fetchsessionData(id) {
-  const response = await fetch(`http://localhost:5000/reservations/event/${id}`, {
+  const response = await fetch(`${serverUrl}/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -33,7 +34,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 import { useState, useEffect } from "react";
 
 async function fetchEventData(id) {
-  const response = await fetch(`http://localhost:5000/events/${id}`, {
+  const response = await fetch(`${serverUrl}/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -179,7 +180,7 @@ export default function Dashboard() {
    
     const fetchBookings = async () => {
     
-      const response = await fetch("http://localhost:5000/bookings", {
+      const response = await fetch(`${serverUrl}/bookings`, {
         method: "GET",
         credentials: "include",
           headers: {

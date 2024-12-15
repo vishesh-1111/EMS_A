@@ -1,9 +1,10 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 async function fetchEventData(id) {
-  const response = await fetch(`http://localhost:5000/events/${id}`, {
+  const response = await fetch(`${serverUrl}/events/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -57,7 +58,7 @@ export default function EventPage() {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-     await fetch(`http://localhost:5000/events/${id}`, {
+     await fetch(`${serverUrl}/events/${id}`, {
         method: 'PUT',  // Using PUT to replace the entire document
         headers: {
           'Content-Type': 'application/json',

@@ -1,8 +1,10 @@
 "use client"
 import { useState,useEffect } from "react";
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+
 async function fetchUsers() {
 
-  const response = await fetch(`http://localhost:5000/user`, {
+  const response = await fetch(`${serverUrl}/user`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

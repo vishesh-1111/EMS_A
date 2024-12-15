@@ -2,11 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 
 const deleteEvent = async (id, setEvents) => {
   try {
-    const response = await fetch(`http://localhost:5000/events/${id}`, {
+    const response = await fetch(`${serverUrl}/events/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -66,7 +67,7 @@ export default function RenderAllEvents({ user }) {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch('http://localhost:5000/events');
+        const response = await fetch(`${serverUrl}/events`);
         if (!response.ok) {
           throw new Error('Failed to fetch events');
         }

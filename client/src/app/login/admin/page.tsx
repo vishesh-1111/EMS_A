@@ -4,6 +4,7 @@ import { Label } from "../../../components/ui/label";
 import { Input } from "../../../components/ui/input";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 export default function UserLoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -19,7 +20,7 @@ export default function UserLoginForm() {
       email,
       password,
     };
-      const response = await fetch("http://localhost:5000/admin/login", {
+      const response = await fetch(`${serverUrl}/admin/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 
 export default function Dashboard({user}) {

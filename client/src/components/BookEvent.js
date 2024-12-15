@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { socket } from '../socket.js';
 import { useNavigate } from 'react-router-dom';
 
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function BookEvent({ event, cost, vipTickets,
   standardTickets,remainingSeconds,userReservation }) {
@@ -29,7 +30,7 @@ export default function BookEvent({ event, cost, vipTickets,
     console.log(cost);
     const PostReservation = async () => {
       try {
-        const response = await fetch('http://localhost:5000/reservations', {
+        const response = await fetch(`${serverUrl}/reservations`, {
           method: 'POST',
           credentials: 'include',
           headers: {
@@ -99,7 +100,7 @@ export default function BookEvent({ event, cost, vipTickets,
     e.preventDefault();
     setIsProcessing(true);
     try {
-      const response = await fetch('http://localhost:5000/payment', {
+      const response = await fetch(`${serverUrl}/payment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

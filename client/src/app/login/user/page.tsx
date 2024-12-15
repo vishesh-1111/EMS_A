@@ -10,6 +10,8 @@ export default function UserLoginForm() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
@@ -19,7 +21,7 @@ export default function UserLoginForm() {
       email,
       password,
     };
-      const response = await fetch("http://localhost:5000/user/login", {
+      const response = await fetch(`${serverUrl}/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

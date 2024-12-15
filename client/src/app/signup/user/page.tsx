@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { Label } from "../../../components/ui/label";
 import { Input } from "../../../components/ui/input";
 import EmailConflictModal from '@/components/errors/emailconflict';
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+
 import { cn } from "@/lib/utils";
 import {
   IconBrandGithub,
@@ -27,7 +29,7 @@ export default function SignupFormDemo() {
     const userData = { name, email, password };
 
     try {
-      const response = await fetch("http://localhost:5000/user/signup", {
+      const response = await fetch(`${serverUrl}/user/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -2,6 +2,7 @@
 
 import { useCookies } from 'next-client-cookies';
 import { jwtDecode } from "jwt-decode";
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function MyComponent() {
   const cookies = useCookies();

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { socket } from '../../socket'
 import { useCookies } from 'next-client-cookies'; // or use 'react-cookie' based on your setup
 import { jwtDecode } from "jwt-decode";
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function RenderReservationStatus(){
   const [isconnected,Setisconnected] = useState(false);
@@ -20,7 +21,7 @@ export default function RenderReservationStatus(){
    const fetchReservations = async () => {
     try {
 
-      const response = await fetch('http://localhost:5000/reservations/active');
+      const response = await fetch(`${serverUrl}/reservations/active`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch reservations');

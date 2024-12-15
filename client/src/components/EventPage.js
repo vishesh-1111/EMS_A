@@ -1,8 +1,10 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+
 async function fetchEventData(id) {
-  const response = await fetch(`http://localhost:5000/events/${id}`, {
+  const response = await fetch(`${serverUrl}/events/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

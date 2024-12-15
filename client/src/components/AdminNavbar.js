@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { HoveredLink, Menu, MenuItem } from "./ui/navbar-menuj";
 import { cn } from "@/lib/utils";
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function HomeNavbar() {
   return (
