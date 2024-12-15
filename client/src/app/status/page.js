@@ -1,14 +1,14 @@
 "use client"
 import { useEffect, useState } from 'react'
 import { socket } from '../../socket'
-import { useCookies } from 'next-client-cookies'; // or use 'react-cookie' based on your setup
-import { jwtDecode } from "jwt-decode";
+// import { useCookies } from 'next-client-cookies'; // or use 'react-cookie' based on your setup
+// import { jwtDecode } from "jwt-decode";
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function RenderReservationStatus(){
   const [isconnected,Setisconnected] = useState(false);
   const [Reservations,setReservations]= useState(null);
-  const [decoded] = useState(jwtDecode(useCookies().get('token')));
+  // const [decoded] = useState(jwtDecode(useCookies().get('token')));
   
 
     
@@ -100,18 +100,7 @@ export default function RenderReservationStatus(){
   }, [Reservations,isconnected]); 
   
 
-   
 
-
-   if(!decoded||decoded.role!=='admin'){
-    return (
-      <div>
-        <h1>
-         Unauthorised!!
-        </h1>
-      </div>
-    )
-   }
 
    if(Reservations===null){
      return (
