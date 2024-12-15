@@ -11,23 +11,23 @@ export default function HomePage(){
   console.log('rendered');
   const [user, setUser] = useState(null); 
      console.log(serverUrl);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //         const response = await fetch(`${serverUrl}/user/temp`, {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         credentials: "include",
-  //       });
+  useEffect(() => {
+    const fetchData = async () => {
+          const response = await fetch(`${serverUrl}/user/temp`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
 
-  //       const result = await response.json();
-  //       if(response.ok){
-  //         setUser(result);
-  //       }
-  //   };
-  //  if(user===null)fetchData(); 
-  // },[]); 
+        const result = await response.json();
+        if(response.ok){
+          setUser(result);
+        }
+    };
+   if(user===null)fetchData(); 
+  },[]); 
   
  
 
