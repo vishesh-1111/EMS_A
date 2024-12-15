@@ -34,7 +34,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 import { useState, useEffect } from "react";
 
 async function fetchEventData(id) {
-  const response = await fetch(`${serverUrl}/${id}`, {
+  const response = await fetch(`${serverUrl}/events/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
