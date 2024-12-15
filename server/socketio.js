@@ -9,7 +9,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
     connectionStateRecovery : {},
      cors: {
-       origin: 'https://my-first-react-mwp55g9ws-vishesh-1111s-projects.vercel.app',
+       origin: 'https://my-first-react-hhefr4xzh-vishesh-1111s-projects.vercel.app/',
        methods: ['GET', 'POST'],
        credentials: true,
      },
