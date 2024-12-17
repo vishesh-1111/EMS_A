@@ -6,7 +6,6 @@ app.use(cookieParser());
 const cors = require('cors');
 const dburl=(process.env.LOCAL_MONGO__URL||process.env.MONGOURL);
 console.log(dburl);
-console.log(process.env.NODE_ENV);
 const userrouter = require('./routes/user');
 const adminrouter = require('./routes/admin');
 const { eventRouter } = require('./routes/event');
@@ -15,10 +14,9 @@ const BookingsRouter = require('./routes/bookings');
 const { PaymentRouter } = require('./routes/payment');
 const { isUser, isAdmin } = require('./middlewares/authentication');
 const {connectDB} = require('./mongodb/connection');
-const port = process.env.PORT || 5000;
 connectDB(dburl);
+const port = process.env.PORT || 5000;
 app.use(bodyParser.json()); 
-
 app.use(cors({
   origin: process.env.LOCAL_ORIGIN||process.env.VERCEL_ORIGIN,
   
