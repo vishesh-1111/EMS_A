@@ -77,9 +77,7 @@ async function fetchEventData(id) {
           }
         });
         
-        if (history.length === 0) {
-          return <h1>No Active Bookings yet</h1>;
-        }
+        
       
       Promise.all(fetchEventDetails).then((result) => {
         const currenthistory = result.filter(item => (item !== undefined&&(!item.isDeleted)));
@@ -90,6 +88,16 @@ async function fetchEventData(id) {
       });
     
     }, [history]);
+
+    if(currentuserhistory.length===0){
+      return(
+        <div>
+          <h1>
+            NO BOOKINGS FOUND
+          </h1>
+        </div>
+      )
+    }
              
     return (
       <>

@@ -5,6 +5,13 @@ const { io } = require('../socketio');
 
 Reservationrouter
 .get('/',async(req,res)=>{
+ 
+   if(!req.cookies['token']||!req.cookies['token'].role==='admin'){
+    return res.status(403).json({
+      message : "Unauthorised"
+    })
+   }
+
   try {
     const AllReservations = await reservation.find({});
     
@@ -17,6 +24,14 @@ Reservationrouter
   }
 })
 .get('/active',async(req,res)=>{
+
+   
+  if(!req.user||!(req.user.role==='admin')){
+
+    return res.status(403).json({
+      message : "Unauthorised"
+    })
+   }
   try {
     const ActiveReservations = await reservation.find({isActive:true});
     
@@ -42,7 +57,6 @@ Reservationrouter
 .post('/',async(req,res)=>{
     console.log('reservation post request received');
     const body = req.body;
-    console.log(body);
     const userReservation = new reservation({
       eventid : body.eventid,
       userid  : req.user._id,
@@ -86,43 +100,7 @@ Reservationrouter
 
 })
 
-.post('/update',async(req,res)=>{
-  console.log('called');
-  console.log('reservation update  request received');
-  const status = req.body.status;
-  const eventid =req.body.event._id;
-  const userid = req.user._id;
- 
-  try{
 
-    var userReservation = await reservation.findOne({
-      userid : userid,
-      eventid : eventid,
-      isActive : true,
-    })
-
-    if(!userReservation){
-     return res.status(404).json({
-        message : "Reservation not found",
-      })
-    }
-    
-  }
-  catch(err){
-    res.status(500).json({
-      message : err,
-    })
-  }
-    userReservation.isActive = false;
-    userReservation.status = status;
-    await userReservation.save();
-    console.log(userReservation);
-    console.log('updated successfully');
-    res.status(200).json({
-      message: "Reservation updated successfully",
-      reservation: userReservation,
-  });
-});
 
 module.exports = Reservationrouter
 

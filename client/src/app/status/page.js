@@ -1,14 +1,13 @@
 "use client"
 import { useEffect, useState } from 'react'
 import { socket } from '../../socket'
-// import { useCookies } from 'next-client-cookies'; // or use 'react-cookie' based on your setup
-// import { jwtDecode } from "jwt-decode";
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function RenderReservationStatus(){
   const [isconnected,Setisconnected] = useState(false);
   const [Reservations,setReservations]= useState(null);
-  // const [decoded] = useState(jwtDecode(useCookies().get('token')));
+  const [admin,setAdmin] = useState(false);
+
   
 
     
@@ -21,7 +20,14 @@ export default function RenderReservationStatus(){
    const fetchReservations = async () => {
     try {
 
-      const response = await fetch(`${serverUrl}/reservations/active`);
+      const response = await fetch(`${serverUrl}/reservations/active`,{
+        method : 'GET',
+        credentials : 'include',
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response);
 
       if (!response.ok) {
         throw new Error('Failed to fetch reservations');
@@ -29,8 +35,9 @@ export default function RenderReservationStatus(){
       const data = await response.json();
       console.log(data);
       setReservations(data);
+      setAdmin(true);
     } catch (error) {
-      console.error('Error fetching reservations:', error);
+      //console.error('Error fetching reservations:', error);
     }
 
   };
@@ -38,39 +45,36 @@ export default function RenderReservationStatus(){
    
    if(!Reservations) fetchReservations();
     
-
-    
-   socket.on('connect',()=>{
-     Setisconnected(true); 
-     console.log('Admin socket connected:', socket.connected,socket.id); 
-     
-    });
+      socket.on('connect',()=>{
+        Setisconnected(true); 
+        console.log('Admin socket connected:', socket.connected,socket.id); 
+      });
      socket.on('reservationmade', (event) => {
        console.log('reccc');
        console.log('Admin received reservation event:', event);
-
-         console.log('live',Reservations);
+       
+       console.log('live',Reservations);
          setReservations(prevReservations => [...prevReservations, event]);
          console.log('reservations',Reservations)
 
-     });
-
-
-     socket.on('reservationexpired', (updatedReservation) => {
-
-      console.log('Received updated reservation:', updatedReservation);
-
-      setReservations(prevReservations => {
-        console.log('prev',prevReservations);
-        return prevReservations.map(reservation =>
-          reservation._id === updatedReservation._id ? updatedReservation : reservation
-        );
-      });
+        });
+        
+        
+        socket.on('reservationexpired', (updatedReservation) => {
+          
+          console.log('Received updated reservation:', updatedReservation);
+          
+          setReservations(prevReservations => {
+            console.log('prev',prevReservations);
+            return prevReservations.map(reservation =>
+              reservation._id === updatedReservation._id ? updatedReservation : reservation
+            );
+          });
     });
     socket.on('reservationsuccess', (updatedReservation) => {
 
       console.log('Received updated reservation:', updatedReservation);
-
+      
       setReservations(prevReservations => {
         console.log('prev',prevReservations);
         return prevReservations.map(reservation =>
@@ -78,15 +82,18 @@ export default function RenderReservationStatus(){
         );
       });
     });
+    
+    
+    socket.on('disconnect', () => {
+      console.log('Admin disconnected:');
+      Setisconnected(false);
+    });
   
-   
-   socket.on('disconnect', () => {
-     console.log('Admin disconnected:');
-     Setisconnected(false);
-   });
-
-   return () => {
-    socket.off('disconnect', ()=>{
+    return () => {
+      socket.off('connect', ()=>{
+        
+      });
+      socket.off('reservationmade', ()=>{
       
     });
     socket.off('reservationexpired', ()=>{
@@ -95,12 +102,21 @@ export default function RenderReservationStatus(){
     socket.off('reservationsuccess', ()=>{
       
     });
+    socket.off('disconnect', ()=>{
+      
+    });
 
   };
-  }, [Reservations,isconnected]); 
+  }, []); 
   
 
-
+    if(!admin){
+      return (
+        <div>
+         Unauthorised!!
+     </div>
+    )
+    }
 
    if(Reservations===null){
      return (
