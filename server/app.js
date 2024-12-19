@@ -4,7 +4,7 @@ require('dotenv').config();
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 const cors = require('cors');
-const dburl=(process.env.LOCAL_MONGO__URL||process.env.MONGOURL);
+const dburl=(process.env.MONGOURL||process.env.LOCAL_MONGO__URL);
 console.log(dburl);
 const userrouter = require('./routes/user');
 const adminrouter = require('./routes/admin');
@@ -15,10 +15,11 @@ const { PaymentRouter } = require('./routes/payment');
 const { isUser, isAdmin } = require('./middlewares/authentication');
 const {connectDB} = require('./mongodb/connection');
 connectDB(dburl);
+
 const port = process.env.PORT || 5000;
 app.use(bodyParser.json()); 
 app.use(cors({
-  origin: process.env.LOCAL_ORIGIN||process.env.VERCEL_ORIGIN,
+  origin: process.env.VERCEL_ORIGIN||process.env.LOCAL_ORIGIN,
   
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['GET', 'POST','DELETE','PUT','OPTIONS'],
