@@ -15,7 +15,7 @@ const { PaymentRouter } = require('./routes/payment');
 const { isUser, isAdmin } = require('./middlewares/authentication');
 const {connectDB} = require('./mongodb/connection');
 connectDB(dburl);
-
+console.log(io._opts);
 const port = process.env.PORT || 5000;
 app.use(bodyParser.json()); 
 app.use(cors({
