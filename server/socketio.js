@@ -9,7 +9,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
     connectionStateRecovery : {},
      cors: {
-       origin: process.env.VERCEL_ORIGIN||'http://localhost:3000',
+       origin: process.env.LOCAL_ORIGIN||process.env.VERCEL_ORIGIN,
        methods: ['GET', 'POST'],
        credentials: true,
      },

@@ -215,8 +215,10 @@ export default function Dashboard() {
     }
  
   return (
-        <div className="mt-40 bg-gray-200 min-h-screen"> 
-
+        <div className=""> 
+         <div>
+          Dashboard
+         </div>
       <RenderDashboard history={history}></RenderDashboard>
     </div>
   );

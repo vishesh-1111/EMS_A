@@ -6,16 +6,7 @@ const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 export default function Dashboard({user}) {
 
     
-    if (user===null) {
-      return (
-        <div className="mt-40 w-full max-w-lg mx-auto p-6 border border-gray-300 rounded-lg shadow-md">
-        <div>
-          <h2>Welcome</h2>
-          <h2>Please log in to access your booked events history</h2>
-        </div>
-        </div>
-      );
-    }
+  
    
    if(user.role==='admin')return (
     <div className="mt-40">

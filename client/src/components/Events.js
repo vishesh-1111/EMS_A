@@ -1,10 +1,25 @@
 "use client"
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Avatar from "@mui/material/Avatar";
+import { red } from "@mui/material/colors";
 
+import { Box } from '@mui/material'
+import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+
+import CardActionArea from '@mui/material/CardActionArea';
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
+import CardHeader from "@mui/material/CardHeader";
+
+import Image from 'next/image';
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
-
-
+import  dumbtoji from'@/styles/images/eventimages/dumbtoji.jpg'
+import  toji from'@/styles/images/eventimages/toji.jpg'
+import Link from 'next/link';
 const deleteEvent = async (id, setEvents) => {
   try {
     const response = await fetch(`${serverUrl}/events/${id}`, {
@@ -25,40 +40,72 @@ const deleteEvent = async (id, setEvents) => {
   }
 
 };
-
-const Card = ({ event, user, setEvents }) => {
+export function EventCard({ event, user, setEvents, deleteEvent }) {
   return (
-    <div className="card">
-      <h3>{event.name}</h3>
-      <p>{event.description}</p>
-      {user&&user.role=='user'&&(
-      <Link href={`/event/${event._id}`} className="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
-        View
-      </Link>
-      )
- }
-
-      {user && user.role === 'admin' && (
-        <>
-          <button
-            type="button"
-            className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-            onClick={() => deleteEvent(event._id, setEvents)} // Call deleteEvent here
-          >
-            Delete
-          </button>
-
-          <Link
-            href={`/updevent/${event._id}`}
-            className="focus:outline-none text-white bg-yellow-500 hover:bg-yellow-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-          >
-            Update
+    <Card sx={{ maxWidth: 340, display: 'flex', flexDirection: 'column', height: '100%' }}>
+      
+      {/* Box containing the CardMedia and CardContent */}
+      <Box sx={{ flexGrow: 1 }}>
+        <CardActionArea>
+          <Link href={`/event/${event._id}`} passHref>
+            <CardMedia
+              component="img"
+              height="140" // Adjust the height of the image
+              image={toji.src}
+              alt="logo"
+              sx={{ cursor: 'pointer' }}
+            />
           </Link>
-        </>
-      )}
-    </div>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              {event.name}
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                color: 'text.secondary',
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                WebkitLineClamp: 2, // Truncate to 2 lines
+              }}
+            >
+              {event.description}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </Box>
+
+      {/* Box containing the action buttons */}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          padding: 1,
+          borderTop: '1px solid #ddd',
+          marginTop: 'auto', // Ensures this Box is pushed to the bottom
+        }}
+      >
+        {user.role === 'user' && (
+          <Button size="medium" href={`event/${event._id}`}>
+            View
+          </Button>
+        )}
+        {user.role === 'admin' && (
+          <Button size="medium" href={`/updevent/${event._id}`}>
+            Update
+          </Button>
+        )}
+        {user.role === 'admin' && (
+          <Button size="medium" onClick={() => deleteEvent(event._id, setEvents)}>
+            Delete
+          </Button>
+        )}
+      </Box>
+    </Card>
   );
-};
+}
+
 export default function RenderAllEvents({ user }) {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -93,12 +140,19 @@ export default function RenderAllEvents({ user }) {
 
   return (
     <div>
-      <h1>Upcoming Events</h1>
+      <h1 className="mt-5 text-2xl font-bold mb-4">Upcoming Events</h1>
+      <div className=" grid grid-cols-3 gap-4 justify-between">
       {events.map((event) => (
-        <ul key={event._id}>
-          <Card event={event} user={user} setEvents={setEvents} /> {/* Pass setEvents */}
-        </ul>
-      ))}
+          <EventCard
+            key={event._id}
+            event={event}
+            user={user}
+            setEvents={setEvents}
+          />
+        ))}
+      </div>
     </div>
+
+
   );
 }

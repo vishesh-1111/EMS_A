@@ -1,17 +1,19 @@
-
-import { CookiesProvider } from 'next-client-cookies/server';
-
-
+"use client";
+// import { Provider } from "@/components/ui/provider"
+import { AppContextProvider } from "./context/appContext";
+import Localization from '../Localization'
 const Layout = ({ children }) => {
   return (
-    <html lang="en">
-      <body>
-        <CookiesProvider>
+      <html >
+        <body>
+          <Localization>
+          <AppContextProvider>
           {children}
-        </CookiesProvider>
-      </body>
-    </html>
-  );
+          </AppContextProvider>
+          </Localization>
+        </body>
+      </html>
+  )
 };
 
 export default Layout;

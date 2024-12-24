@@ -1,49 +1,16 @@
-@tailwind base;
+
+
+@import '../styles/partials/rest.css';
+@import '../styles/partials/erp.css';
+@import '../styles/partials/customAntd.css';
+@import '../styles/partials/layout.css';
+@import '../styles/partials/auth.css';
+@import '../styles/partials/core.css';
+@import '../styles/partials/sidePanel.css';
+@import '../styles/partials/collapseBox.css';
+@import '../styles/partials/header.css';
+@import '../styles/partials/navigation.css';
+
+ @tailwind base;
 @tailwind components;
-@tailwind utilities;
-
-/* Set a dark gray background for the entire application */
-
-.card-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;  /* Space between cards */
-  justify-content: space-between;  /* Ensure cards are spaced evenly */
-}
-
-.card-item {
-  width: calc(33.33% - 20px);  /* 3 cards per row, subtract the gap */
-  box-sizing: border-box;
-}
-
-.card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 20px;
-  background-color: #fff;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.card h3 {
-  margin: 0 0 10px;
-}
-
-.card p {
-  margin: 0 0 20px;
-}
-
-/* Style for the "View" button link */
-.view-button {
-  display: inline-block;
-  background-color: #007BFF;
-  color: white;
-  padding: 10px 15px;
-  border-radius: 5px;
-  text-decoration: none;  /* Remove underline */
-  text-align: center;
-}
-
-.view-button:hover {
-  background-color: #0056b3;
-}
+@tailwind utilities; 
