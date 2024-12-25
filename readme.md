@@ -14,7 +14,7 @@ Core Functional Requirements
 1. User Role:
 
 	•	User Registration & Login:
-	•	Users must register with basic details (Name, Email, Password).
+	•	Users must register with basic details (Name, Email and Password).
 	•	Login/Logout functionality for returning users.
 	•	Event Browsing:
 	•	Users can view a list of events with essential details (Name, Date, Location, Ticket Price).
