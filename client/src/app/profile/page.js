@@ -1,33 +1,34 @@
-'use client';
+"use client";
 
-import { useCookies } from 'next-client-cookies';
-import { jwtDecode } from "jwt-decode";
-const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import {jwtDecode} from "jwt-decode";
 
 export default function MyComponent() {
-  const cookies = useCookies();
-  const token = cookies.get('token'); // Get the JWT token from cookies
+  const [cookies] = useCookies(["token"]);
+  const [decoded, setDecoded] = useState(null);
 
+  useEffect(() => {
+    const token = cookies.token;
 
-  if (!token) {
-    return <div>No token found!</div>;
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setDecoded(decodedToken);
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+      }
+    }
+  }, [cookies]);
+
+  if (!decoded) {
+    return <div>Loading...</div>;
   }
 
-  try {
-    const decoded = jwtDecode(token);
-    console.log(decoded);
-    return(
-      <div>
-        <p>
-        Name : {decoded.name}
-        </p>
-        <p>
-        email : {decoded.email}
-        </p>
-      </div>
-    )
-  } catch (error) {
-    console.error('Failed to verify or decrypt the token:', error);
-    return <div>Error decrypting token</div>;
-  }
+  return (
+    <div>
+      <p>Name: {decoded.name}</p>
+      <p>Email: {decoded.email}</p>
+    </div>
+  );
 }

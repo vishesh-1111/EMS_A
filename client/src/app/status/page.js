@@ -1,6 +1,7 @@
 "use client"
 import { useEffect, useState } from 'react'
 import { socket } from '../../socket'
+import Reservation from '../../components/Reservation.js'
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function RenderReservationStatus(){
@@ -138,19 +139,12 @@ export default function RenderReservationStatus(){
  
    
  return (
-
-<div>
-  {console.log('hello', Reservations)}
-  <div className="space-y-4 p-5"> {/* Container with vertical space between items */}
+   <div>
+ 
+  <div className="space-y-4 p-5" > {/* Container with vertical space between items */}
     {Reservations.map((r) => (
-      <div key={r._id} className="flex items-center justify-between p-4 bg-gray-100 rounded-lg shadow-md">
-        <div className="flex-1 text-center text-gray-800 font-semibold">{r._id}</div>
-        <div className="flex-1 text-center text-gray-800">{r.status}</div>
-        <div className="flex-1 text-center text-gray-800">{r.userid}</div>
-        <div className="flex-1 text-center text-gray-800">{r.standardTickets}</div>
-        <div className="flex-1 text-center text-gray-800">{r.vipTickets}</div>
-        <div className="flex-1 text-center text-gray-800">{r.reservationDate}</div>
-      </div>
+        
+        <Reservation reservation={r} key={r._id}/>
     ))}
   </div>
 </div>

@@ -97,7 +97,7 @@ export default function EventPage({}) {
   if(existingSession){
     const expiredDate = new Date(existingSession.expiresAt).getTime();
     const currentDate =  Date.now();
-
+                                         
     console.log(currentDate,expiredDate);
     const differenceInMilliseconds = expiredDate - currentDate;
     const remainingSeconds = Math.max(0, differenceInMilliseconds / 1000);

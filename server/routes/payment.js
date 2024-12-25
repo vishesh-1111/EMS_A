@@ -3,11 +3,25 @@ const PaymentRouter = express.Router();
 const {payment} = require('../models/payment');
 const {booking} = require('../models/booking');
 const { reservation } = require('../models/reservation');
+const {user} = require('../models/user');
 const { io } = require('../socketio');
 
 PaymentRouter
-.get('/',(req,res)=>{
-    console.log('hi');
+.get('/history',async(req,res)=>{
+      
+    try{
+        const payments = await payment.find({
+            userid : req.user._id,
+        });
+        
+        return res.status(200).json(payments);
+        
+    }
+    catch(err){
+        console.log('Error fetching payment of given user',err);
+    }
+
+
 })
 .post('/', async (req, res) => {
     const { event, cost, cardNumber, expirationDate,
@@ -68,6 +82,7 @@ PaymentRouter
     const userReservation = await reservation.findById(reservationid);
     userReservation.status= 'success';
     userReservation.isActive=false;
+    userReservation.expiresAt=0;
     await userReservation.save();
     io.emit('reservationsuccess',userReservation,()=>{
         console.log('Admin ko pata chal gaya ki reservation successful ho gya hai');

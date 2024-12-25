@@ -9,7 +9,7 @@ import Image from 'next/image';
 import useLanguage from '../components/uselanguage';
 import logoIcon from '@/styles/bbz.jpeg'
 import lgtxt from '@/styles/images/logo-text.svg';
-
+import RenderPaymentHistory from './history/page.js'
 import useResponsive from '../components/UseResponsive';
 
 import {
@@ -63,7 +63,8 @@ function Sidebar({ collapsible, isMobile = false }) {
     {
       key: 'Payment History',
       icon: <WalletOutlined />,
-      label: <Link href={'/payment'}>{translate('Payment History')}</Link>,
+       label: <Link href={'/paymenthistory'}>{translate('Payment History')}</Link>,
+    
     },
 
  

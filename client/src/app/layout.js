@@ -1,19 +1,22 @@
 "use client";
-// import { Provider } from "@/components/ui/provider"
 import { AppContextProvider } from "./context/appContext";
-import Localization from '../Localization'
+import Localization from '../Localization';
+import { CookiesProvider } from "react-cookie";
+
 const Layout = ({ children }) => {
   return (
-      <html >
-        <body>
+    <html>
+      <body>
+        <CookiesProvider>
           <Localization>
-          <AppContextProvider>
-          {children}
-          </AppContextProvider>
+            <AppContextProvider>
+              {children}
+            </AppContextProvider>
           </Localization>
-        </body>
-      </html>
-  )
+        </CookiesProvider>
+      </body>
+    </html>
+  );
 };
 
 export default Layout;

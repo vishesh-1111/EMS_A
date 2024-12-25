@@ -1,50 +1,185 @@
-"use client";
-import React, { useState } from "react";
-import { HoveredLink, Menu, MenuItem } from "./ui/navbar-menuj";
-import { cn } from "@/lib/utils";
-const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
-export default function HomeNavbar() {
+import { useState, useEffect } from 'react';
+import { Button, Drawer, Layout, Menu } from 'antd';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { useAppContext } from '@/app/context/appContext';
+import Image from 'next/image';
+
+import useLanguage from '../components/uselanguage';
+import logoIcon from '@/styles/bbz.jpeg'
+import lgtxt from '@/styles/images/logo-text.svg';
+import RenderPaymentHistory from './history/page.js'
+import useResponsive from '../components/UseResponsive';
+
+import {
+  SettingOutlined,
+  CustomerServiceOutlined,
+  ContainerOutlined,
+  FileSyncOutlined,
+  DashboardOutlined,
+  TagOutlined,
+  TagsOutlined,
+  UserOutlined,
+  CreditCardOutlined,
+  MenuOutlined,
+  FileOutlined,
+  ShopOutlined,
+  FilterOutlined,
+  WalletOutlined,
+  ReconciliationOutlined,
+  RotateLeftOutlined,
+  SearchOutlined,
+} from '@ant-design/icons';
+import { Router } from 'next/router';
+
+const { Sider } = Layout;
+
+export default function Navigation({user}) {
+  const { isMobile } = useResponsive();
+  
+  return isMobile ? <MobileSidebar /> : <Sidebar collapsible={false} />;
+}
+
+function Sidebar({ collapsible, isMobile = false }) {
+  
+
+  const { state: stateApp, appContextAction } = useAppContext();
+  const { isNavMenuClose } = stateApp;
+  const { navMenu } = appContextAction;
+  const [showLogoApp, setLogoApp] = useState(isNavMenuClose);
+  const [currentPath, setCurrentPath] = useState('');
+
+  const translate = useLanguage();
+
+  const items = [
+    {
+      key: 'dashboard',
+      label: <Link href={'/'}>{translate('dashboard')}</Link>,
+      icon: <DashboardOutlined />,
+    },
+  
+
+    {
+      key: 'User List',
+      label: <Link href={'/users'}>{translate('User List')}</Link>,
+      icon: <UserOutlined />,
+
+    
+    },
+
+ 
+
+    {
+      key: 'Reservation Status',
+      label: <Link href={'/status'}>{translate('Reservation Status')}</Link>,
+      icon: <SearchOutlined />,
+    },
+  ];
+                                                 
+  
+  useEffect(() => {
+    if (location)
+      if (currentPath !== location.pathname) {
+        if (location.pathname === '/') {
+          setCurrentPath('dashboard');
+        } else setCurrentPath(location.pathname.slice(1));
+      }
+  }, [location, currentPath]);
+
+  useEffect(() => {
+    if (isNavMenuClose) {
+      setLogoApp(isNavMenuClose);
+    }
+    const timer = setTimeout(() => {
+      if (!isNavMenuClose) {
+        setLogoApp(isNavMenuClose);
+      }
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [isNavMenuClose]);
+  const onCollapse = () => {
+    navMenu.collapse();
+  };
+
   return (
-    <div className="relative w-full flex items-center justify-center">
-      <Navbar className="top-2" />
-    </div>
+    <Sider
+      collapsible={collapsible}
+      collapsed={collapsible ? isNavMenuClose : collapsible}
+      onCollapse={onCollapse}
+      className="navigation"
+      width={256}
+      style={{
+        overflow: 'auto',
+        height: '100vh',
+
+        position: isMobile ? 'absolute' : 'relative',
+        bottom: '20px',
+        ...(!isMobile && {
+          // border: 'none',
+          ['left']: '20px',
+          top: '20px',
+          // borderRadius: '8px',
+        }),
+      }}
+      theme={'light'}
+    >
+      <div
+        className="logo"
+        onClick={() => ('/')}
+        style={{
+          cursor: 'pointer',
+        }}
+      >
+        <Image src={logoIcon} alt="Logo" style={{ marginLeft: '-5px', height: '40px' }} />
+
+        {!showLogoApp && (
+          <p>Buri Buri..</p>
+        )}
+      </div>
+      <Menu
+        items={items}
+        mode="inline"
+        theme={'light'}
+        selectedKeys={[currentPath]}
+        style={{
+          width: 256,
+        }}
+      />
+    </Sider>
   );
 }
 
-function Navbar({ className }) {
-  const [active, setActive] = useState(null);
-  
+function MobileSidebar() {
+  const [visible, setVisible] = useState(false);
+  const showDrawer = () => {
+    setVisible(true);
+  };
+  const onClose = () => {
+    setVisible(false);
+  };
+
   return (
     <>
-      <div
-        className={cn(
-          "fixed top-0 inset-x-0 max-w-2xl mx-auto z-10 bg-white shadow-md", // fixed positioning with top-0 and full width
-          className
-        )}
+      <Button
+        type="text"
+        size="large"
+        onClick={showDrawer}
+        className="mobile-sidebar-btn"
+        style={{ ['marginLeft']: 25 }}
       >
-
-        
-        <Menu setActive={setActive}>
-          <MenuItem setActive={setActive} active={active} item="Logout">
-            <div className="flex flex-col space-y-4 text-sm">
-              <HoveredLink href="http://localhost:5000/user/logout">User</HoveredLink>
-              <HoveredLink href="http://localhost:5000/admin/logout">Admin</HoveredLink>
-            </div>
-          </MenuItem>
-
-          <MenuItem setActive={setActive} active={active} item="Profile">
-            <div className="flex flex-col space-y-4 text-sm">
-              <HoveredLink href="/signup/user">User</HoveredLink>
-            </div>
-          </MenuItem>
-          <MenuItem setActive={setActive} active={active} item="View users">
-            <div className="flex flex-col space-y-4 text-sm">
-              <HoveredLink href="/signup/user">User</HoveredLink>
-            </div>
-          </MenuItem>
-        </Menu>
-      </div>
+        <MenuOutlined style={{ fontSize: 18 }} />
+      </Button>
+      <Drawer
+        width={250}
+        // style={{ backgroundColor: 'rgba(255, 255, 255, 1)' }}
+        placement={'left'}
+        closable={false}
+        onClose={onClose}
+        open={visible}
+      >
+        <Sidebar collapsible={false} isMobile={true} />
+      </Drawer>
     </>
   );
 }

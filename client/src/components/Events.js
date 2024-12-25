@@ -40,14 +40,17 @@ const deleteEvent = async (id, setEvents) => {
   }
 
 };
-export function EventCard({ event, user, setEvents, deleteEvent }) {
+export function EventCard({ event, user, setEvents, deleteEvent },) {
   return (
+    <div suppressHydrationWarning={true}>
+
     <Card sx={{ maxWidth: 340, display: 'flex', flexDirection: 'column', height: '100%' }}>
       
       {/* Box containing the CardMedia and CardContent */}
       <Box sx={{ flexGrow: 1 }}>
         <CardActionArea>
           <Link href={`/event/${event._id}`} passHref>
+          
             <CardMedia
               component="img"
               height="140" // Adjust the height of the image
@@ -55,7 +58,6 @@ export function EventCard({ event, user, setEvents, deleteEvent }) {
               alt="logo"
               sx={{ cursor: 'pointer' }}
             />
-          </Link>
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
               {event.name}
@@ -69,22 +71,25 @@ export function EventCard({ event, user, setEvents, deleteEvent }) {
                 overflow: 'hidden',
                 WebkitLineClamp: 2, // Truncate to 2 lines
               }}
-            >
+              >
               {event.description}
             </Typography>
           </CardContent>
+          </Link>
         </CardActionArea>
       </Box>
 
       {/* Box containing the action buttons */}
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          padding: 1,
-          borderTop: '1px solid #ddd',
-          marginTop: 'auto', // Ensures this Box is pushed to the bottom
-        }}
+      <CardActionArea>
+
+      <Box 
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        padding: 1,
+        borderTop: '1px solid #ddd',
+        marginTop: 'auto', // Ensures this Box is pushed to the bottom
+      }}
       >
         {user.role === 'user' && (
           <Button size="medium" href={`event/${event._id}`}>
@@ -97,12 +102,16 @@ export function EventCard({ event, user, setEvents, deleteEvent }) {
           </Button>
         )}
         {user.role === 'admin' && (
-          <Button size="medium" onClick={() => deleteEvent(event._id, setEvents)}>
+          <Button size="medium"  onClick={() => deleteEvent(event._id, setEvents)}>
             Delete
+    
           </Button>
         )}
       </Box>
+
+</CardActionArea>
     </Card>
+</div>
   );
 }
 
@@ -139,7 +148,7 @@ export default function RenderAllEvents({ user }) {
   }
 
   return (
-    <div>
+    <div suppressHydrationWarning={true}>
       <h1 className="mt-5 text-2xl font-bold mb-4">Upcoming Events</h1>
       <div className=" grid grid-cols-3 gap-4 justify-between">
       {events.map((event) => (

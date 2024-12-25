@@ -6,7 +6,7 @@ import NavBar from '../components/NavBar';
 import RenderAllEvents from '../components/Events'; 
 import { Layout } from 'antd';
 import  HeaderContent  from './Header/HeaderContainer'
-import Dashboard from '../app/history/page'
+import Dashboard from '../components/history/page'
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function HomePage() {

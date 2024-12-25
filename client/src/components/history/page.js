@@ -179,7 +179,7 @@ async function fetchEventData(id) {
 
 
 
-export default function Dashboard() {
+export default function Dashboard({user}) {
 
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -213,12 +213,16 @@ export default function Dashboard() {
         Loading.....
         </div>;
     }
+    if(user.role==='admin'){
+      return;
+    }
  
   return (
         <div className=""> 
-         <div>
-          Dashboard
-         </div>
+       <div className="relative w-max mx-">
+  <span className="text-xl font-semibold text-blue-500">Dashboard</span>
+  <div className="absolute left-0 top-full w-full h-0.5 bg-grey-500 mt-0"></div>
+</div>
       <RenderDashboard history={history}></RenderDashboard>
     </div>
   );

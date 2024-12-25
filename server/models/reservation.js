@@ -37,10 +37,11 @@ const ReservationSchema = new Schema(
       type: Date,
       default: Date.now
     },
+
     expiresAt: {
       type: Date,
       default: () => {
-        return new Date(Date.now() + 0.5 * 60 * 1000); 
+        return new Date(Date.now() + 2.0 * 60 * 1000); 
       }
     }
   },

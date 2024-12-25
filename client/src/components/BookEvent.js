@@ -13,7 +13,7 @@ export default function BookEvent({ event, cost, vipTickets,
   const [message, setMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const router = useRouter();
-  const [seconds, setSeconds] = useState(remainingSeconds||30);
+  const [seconds, setSeconds] = useState(remainingSeconds||120);
   const [isRunning, setIsRunning] = useState(true);
   const [reservation, setReservation] = useState(userReservation);
 
