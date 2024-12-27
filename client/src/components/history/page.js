@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import PageLoader from '../../components/PageLoader/index.jsx'
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -209,9 +210,9 @@ export default function Dashboard({user}) {
  
     
     if (loading) {
-      return <div className="mt-40 w-full max-w-lg mx-auto p-6 border border-gray-300 rounded-lg shadow-md">
-        Loading.....
-        </div>;
+      return(
+        <PageLoader></PageLoader>
+      )
     }
     if(user.role==='admin'){
       return;

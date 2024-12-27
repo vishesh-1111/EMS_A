@@ -73,7 +73,12 @@ UserRouter
   })
   .get('/logout',(req,res)=>{
     console.log('hi');
-    res.cookie('token','',{maxAge:1});
+    res.cookie('token','',{
+      maxAge:1,
+      httpOnly : false,
+      sameSite : 'none',
+      secure : 'true',
+    });
     res.status(200).send();
   })
   

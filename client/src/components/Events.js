@@ -20,6 +20,7 @@ const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 import  dumbtoji from'@/styles/images/eventimages/dumbtoji.jpg'
 import  toji from'@/styles/images/eventimages/toji.jpg'
 import Link from 'next/link';
+import PageLoader from './PageLoader';
 const deleteEvent = async (id, setEvents) => {
   try {
     const response = await fetch(`${serverUrl}/events/${id}`, {
@@ -140,7 +141,7 @@ export default function RenderAllEvents({ user }) {
   }, []);
 
   if (loading) {
-    return <p>Loading events...</p>;
+    return <PageLoader></PageLoader>
   }
 
   if (error) {

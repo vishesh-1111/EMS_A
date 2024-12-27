@@ -24,8 +24,8 @@ export default function HandleLogout(){
             router.push('/login/user'); 
          }
 
-         CallServerForLogout();
-        });
+         if(!isLoggedOut)CallServerForLogout();
+        },[]);
      
        
            return <PageLoader></PageLoader>
