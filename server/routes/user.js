@@ -20,6 +20,11 @@ UserRouter
 
 .get('/',async(req,res)=>{
   console.log('fetching....');
+  if(!req.admin){
+    return res.status(403).json({
+      message : "Forbidden Route"
+    })
+  }
   const users =await user.find({});
   return res.json(users);
 })

@@ -10,7 +10,6 @@
 @import '../styles/partials/collapseBox.css';
 @import '../styles/partials/header.css';
 @import '../styles/partials/navigation.css';
-
- @tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities; 

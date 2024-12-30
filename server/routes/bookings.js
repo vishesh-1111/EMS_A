@@ -7,7 +7,7 @@ const { admin } = require('../models/admin');
 
 BookingsRouter
 .get('/',async(req,res)=>{
-  if(!req.user)return res.status(404).json({message : 'user 404'});
+  if(!req.user)return res.status(401).json({message : 'user 404'});
   try {
      console.log('called');
     const userid = `${req.user._id}`

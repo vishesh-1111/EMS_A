@@ -49,9 +49,8 @@ export default function HomePage() {
   }
 
   return (
-    <Layout>
+    <Layout >
       <NavBar user={user} setUser={setUser}></NavBar>
-
       <Layout>
      <HeaderContent user={user}/>
      <Content style={{

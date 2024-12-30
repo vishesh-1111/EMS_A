@@ -17,7 +17,7 @@ async function fetchUsers() {
     return result;
   }
   else{
-    return null;
+    return -1;
   }
 };
 
@@ -34,13 +34,20 @@ export default function RenderUsers(){
         }
   }, [users]);  
 
-   if(!users){
+   if(users===null){
     return(
         <div className="">
             Loading Users....
         </div>
     )
    }  
+   if(users===-1){
+    return (
+      <div>
+        Unauthorised
+      </div>
+    )
+   }
         
 
     return(
