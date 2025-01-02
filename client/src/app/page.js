@@ -8,7 +8,6 @@ import RenderAllEvents from '../components/Events';
 import { Layout } from 'antd';
 import HeaderContent from './Header/HeaderContainer';
 import Dashboard from '../components/history/page';
-import RenderUsers from './users/page';
 import RenderChatBot from '../components/ChatBot'
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
