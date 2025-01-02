@@ -31,6 +31,7 @@ UserRouter
 
 .post('/login',async(req,res)=>{
   const {email , password} = req.body;
+  console.log(email,password);
   const User = await user.findOne(
     {
       email : email,

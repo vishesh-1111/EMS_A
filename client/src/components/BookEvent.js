@@ -3,19 +3,21 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { socket } from '../socket.js';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function BookEvent({ event, cost, vipTickets,
   standardTickets,remainingSeconds,userReservation }) {
-  const [cardNumber, setCardNumber] = useState('');
-  const [expirationDate, setExpirationDate] = useState('');
-  const [message, setMessage] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const router = useRouter();
-  const [seconds, setSeconds] = useState(remainingSeconds||120);
-  const [isRunning, setIsRunning] = useState(true);
-  const [reservation, setReservation] = useState(userReservation);
+    const [cardNumber, setCardNumber] = useState('');
+    const [expirationDate, setExpirationDate] = useState('');
+    const [message, setMessage] = useState('');
+    const [isProcessing, setIsProcessing] = useState(false);
+    const router = useRouter();
+    const [seconds, setSeconds] = useState(remainingSeconds||120);
+    const [isRunning, setIsRunning] = useState(true);
+    const [reservation, setReservation] = useState(userReservation);
+    const queryClient = useQueryClient();
 
  
 
@@ -116,9 +118,9 @@ export default function BookEvent({ event, cost, vipTickets,
         }),
       });
 
-      console.log(response);
       if (response.ok) {
           setMessage('Payment Successful!');
+          queryClient.invalidateQueries({ queryKey: ['bookings'] });
           alert('success');
           router.push('/'); 
 

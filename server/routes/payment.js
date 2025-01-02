@@ -5,6 +5,7 @@ const {booking} = require('../models/booking');
 const { reservation } = require('../models/reservation');
 const {user} = require('../models/user');
 const { io } = require('../socketio');
+const { ReturnDocument } = require('mongodb');
 
 PaymentRouter
 .get('/history',async(req,res)=>{
@@ -47,21 +48,27 @@ PaymentRouter
 
     res.clearCookie(`${eventid}`, { path: '/' });
     const userid = req.user._id;
+  try{
 
-    const newPayment = new payment({
-        userid,
-        eventid,
-        cost,
-        cardNumber,
-        expirationDate: new Date(expirationDate)
-    });
-
-    await newPayment.save();
-   
-    const existingBooking = await booking.findOne({ userid, eventid });
+      const newPayment = new payment({
+          userid,
+          eventid,
+          cost,
+          cardNumber,
+          expirationDate: new Date(expirationDate)
+        });
+        
+        await newPayment.save();
+        
+    }
+    catch(err){
+       return res.status(401).json({
+         message : err.message,
+       })
+    }
+        const existingBooking = await booking.findOne({ userid, eventid });
 
     if (existingBooking) {
-        console.log('yay');
         existingBooking.vipTickets += vipTickets;
         existingBooking.standardTickets += standardTickets;
 

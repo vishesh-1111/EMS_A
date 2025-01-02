@@ -1,4 +1,5 @@
 "use client"
+import { useQuery } from '@tanstack/react-query';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -117,52 +118,41 @@ export function EventCard({ event, user, setEvents, deleteEvent },) {
 }
 
 export default function RenderAllEvents({ user }) {
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const fetchEvents = async () => {
+    console.log('fetching data events');
+    const response = await fetch(`${serverUrl}/events`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch events');
+    }
+    return response.json();
+  };
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await fetch(`${serverUrl}/events`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch events');
-        }
-        const data = await response.json();
-        setEvents(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { data: events, isLoading, isError, error } = useQuery({
+    queryFn: fetchEvents, 
+    queryKey: ['fetchevents'],
+    staleTime : Infinity,
+    });
 
-    fetchEvents();
-  }, []);
-
-  if (loading) {
-    return <PageLoader></PageLoader>
+  if (isLoading) {
+    return <PageLoader />;
   }
 
-  if (error) {
-    return <p>Error: {error}</p>;
+  if (isError) {
+    return <p>Error: {error.message}</p>;
   }
 
   return (
     <div suppressHydrationWarning={true}>
       <h1 className="mt-5 text-2xl font-bold mb-4">Upcoming Events</h1>
-      <div className=" grid grid-cols-3 gap-4 justify-between">
-      {events.map((event) => (
+      <div className="grid grid-cols-3 gap-4 justify-between">
+        {events.map((event) => (
           <EventCard
             key={event._id}
             event={event}
             user={user}
-            setEvents={setEvents}
           />
         ))}
       </div>
     </div>
-
-
   );
 }

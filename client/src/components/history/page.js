@@ -1,5 +1,7 @@
 "use client";
 import * as React from 'react';
+import { useQuery } from '@tanstack/react-query';
+
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -35,20 +37,26 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 import { useState, useEffect } from "react";
 
 async function fetchEventData(id) {
-  const response = await fetch(`${serverUrl}/events/${id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
+  try{
 
-  const result = await response.json();
-  if(response.ok){
-    return result;
+    const response = await fetch(`${serverUrl}/events/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    
+    const result = await response.json();
+    if(response.ok){
+      return result;
+    }
+    else{
+      return null;
+    }
   }
-  else{
-    return null;
+  catch(err){
+    
   }
 }
 
@@ -64,7 +72,6 @@ async function fetchEventData(id) {
       const fetchEventDetails = history.map(async (bookedticket) => {
         const event = await fetchEventData(bookedticket.eventid);
         if (event) {
-          console.log(event);
             return {
               _id: event._id,
               name: event.name,
@@ -180,51 +187,42 @@ async function fetchEventData(id) {
 
 
 
-export default function Dashboard({user}) {
-
-  const [history, setHistory] = useState([]);
-  const [loading, setLoading] = useState(true);
-  
-  useEffect(() => {
-   
-    const fetchBookings = async () => {
-    
-      const response = await fetch(`${serverUrl}/bookings`, {
-        method: "GET",
-        credentials: "include",
+  export default function Dashboard({ user }) {
+    const { data: history, isLoading, isError } = useQuery({
+      queryKey: ['bookings',user], 
+      queryFn: async () => {
+        console.log('fetching dashboard....');
+        const response = await fetch(`${serverUrl}/bookings`, {
+          method: 'GET',
+          credentials: 'include',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
+          
         });
-        
-        if (response.ok) {
-          const result = await response.json()
-          setHistory(result);
-        } 
-        setLoading(false);
-      };
-      
-      fetchBookings();
-    }, []);
-    
- 
-    
-    if (loading) {
-      return(
-        <PageLoader></PageLoader>
-      )
+        if (!response.ok) {
+          throw new Error('Failed to fetch bookings');
+        }
+        return response.json();
+      },
+      staleTime: Infinity,
+    });
+  
+    if (isLoading) {
+      return <PageLoader />;
     }
-    if(user.role==='admin'){
-      return;
+  
+    if (isError || user.role === 'admin') {
+      return null; // Handle error/admin state as needed
     }
- 
-  return (
-        <div className=""> 
-       <div className="relative w-max mx-">
-  <span className="text-xl font-semibold text-blue-700">Dashboard</span>
-  <div className="absolute left-0 top-full w-full h-0.5 bg-grey-500 mt-0"></div>
-</div>
-      <RenderDashboard history={history}></RenderDashboard>
-    </div>
-  );
-}
+  
+    return (
+      <div className="">
+        <div className="relative w-max mx-">
+          <span className="text-xl font-semibold text-blue-700">Dashboard</span>
+          <div className="absolute left-0 top-full w-full h-0.5 bg-grey-500 mt-0"></div>
+        </div>
+        <RenderDashboard history={history} />
+      </div>
+    );
+  }
