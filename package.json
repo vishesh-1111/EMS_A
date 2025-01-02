@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@ai-sdk/groq": "^1.0.9",
+    "@ai-sdk/openai": "^1.0.11",
+    "@nanostores/react": "github:ai/react",
+    "ai": "^4.0.22",
+    "zod": "^3.24.1"
+  }
+}

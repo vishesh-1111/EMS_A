@@ -9,12 +9,13 @@ import { Layout } from 'antd';
 import HeaderContent from './Header/HeaderContainer';
 import Dashboard from '../components/history/page';
 import RenderUsers from './users/page';
-import { errorMonitor } from 'events';
+import RenderChatBot from '../components/ChatBot'
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function HomePage() {
   console.log('rendered');
   const { Content } = Layout;
+  const [isDashboardLoaded,setIsDashboardLoaded]=useState(null);
   const router = useRouter();
 
   const fetchUser = async () => {
@@ -39,6 +40,7 @@ export default function HomePage() {
     queryFn: fetchUser, 
     queryKey: ['fetchuser'],
     staleTime: Infinity, 
+    
   });
 
   // Redirect to login page on error
@@ -68,9 +70,12 @@ export default function HomePage() {
             maxWidth: 1400,
           }}
         >
-          <Dashboard user={user}></Dashboard>
-          <RenderAllEvents user={user}></RenderAllEvents>
+          <Dashboard user={user} setIsDashboardLoaded={setIsDashboardLoaded}></Dashboard>
+          <RenderAllEvents  user={user}></RenderAllEvents>
         </Content>
+        <RenderChatBot>
+
+        </RenderChatBot>
       </Layout>
     </Layout>
   );

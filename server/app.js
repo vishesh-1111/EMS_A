@@ -6,6 +6,7 @@ app.use(cookieParser());
 const cors = require('cors');
 const dburl=(process.env.MONGOURL||process.env.LOCAL_MONGO__URL);
 const userrouter = require('./routes/user');
+const StreamRouter = require('./routes/openai');
 const adminrouter = require('./routes/admin');
 const { eventRouter } = require('./routes/event');
 const  Reservationrouter  = require('./routes/reservation');
@@ -16,6 +17,7 @@ const {connectDB} = require('./mongodb/connection');
 connectDB(dburl);
 const port = process.env.PORT || 5000;
 app.use(bodyParser.json()); 
+app.use(require('express').json());
 app.use(cors({
   origin: process.env.VERCEL_ORIGIN||process.env.LOCAL_ORIGIN,
   
@@ -64,6 +66,7 @@ app.use('/events',eventRouter);
 app.use('/bookings',BookingsRouter);
 app.use('/payment',PaymentRouter);
 app.use('/reservations',Reservationrouter);
+app.use('/ai',StreamRouter);
 
 server.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
