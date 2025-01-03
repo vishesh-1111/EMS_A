@@ -21,8 +21,23 @@ export default function HandleLogout(){
                 credentials: "include",
               });
         
-              setIsLoggedOut(true);
-            queryclient.invalidateQueries({queryKey:['bookings']});  
+               setIsLoggedOut(true);
+              queryclient.invalidateQueries({
+                queryKey: ['bookings'],
+
+                refetchInactive: true, 
+              });
+              queryclient.invalidateQueries({
+                queryKey: ['fetchuser'],
+                exact: true, 
+                refetchInactive: true, 
+              });
+              queryclient.invalidateQueries({
+                queryKey: ['userpayments'],
+                exact: true, 
+                refetchInactive: true, 
+              });
+              
               
             router.push('/login/user'); 
          }

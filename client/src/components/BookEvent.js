@@ -120,7 +120,15 @@ export default function BookEvent({ event, cost, vipTickets,
 
       if (response.ok) {
           setMessage('Payment Successful!');
-          queryClient.invalidateQueries({ queryKey: ['bookings'] });
+           queryClient.invalidateQueries({
+                queryKey: ['bookings'],
+                refetchInactive: true, 
+              });
+          queryClient.invalidateQueries({
+            queryKey: ['userpayments'],
+            exact: true, 
+            refetchInactive: true, 
+          });
           alert('success');
           router.push('/'); 
 

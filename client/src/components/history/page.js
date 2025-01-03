@@ -189,7 +189,7 @@ async function fetchEventData(id) {
 
   export default function Dashboard({ user}) {
     const { data: history, isLoading, isError } = useQuery({
-      queryKey: ['bookings',user], 
+      queryKey: ['bookings'], 
       queryFn: async () => {
         console.log('fetching dashboard....');
         const response = await fetch(`${serverUrl}/bookings`, {

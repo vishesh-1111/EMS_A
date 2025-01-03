@@ -30,7 +30,7 @@ async function fetchsessionData(id) {
   else return null;
 }
 
-export default function EventPage({}) {
+export default function EventPage() {
   const [existingSession,setExistingSession] = useState(null);
   const [event, setEvent] = useState(null);
   const [standardTickets, setStandardTickets] = useState(0);

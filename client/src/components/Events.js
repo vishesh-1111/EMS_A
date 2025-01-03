@@ -129,7 +129,7 @@ export default function RenderAllEvents({ user }) {
 
   const { data: events, isLoading, isError, error } = useQuery({
     queryFn: fetchEvents, 
-    queryKey: ['fetchevents'],
+    queryKey: ['bookings',user],
     staleTime : Infinity,
     });
 

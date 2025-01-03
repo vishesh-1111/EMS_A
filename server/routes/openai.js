@@ -38,7 +38,6 @@ StreamRouter.post('/stream', async (req, res) => {
 
   console.log('Received prompt:', req.body.prompt);
 
-  // Call the stream function with the prompt and response object
   await streamHolidayDescription(res, req.body.prompt);
 });
 
