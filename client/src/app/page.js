@@ -39,7 +39,6 @@ export default function HomePage() {
     queryFn: fetchUser, 
     queryKey: ['fetchuser'],
     staleTime: Infinity, 
-    
   });
 
   // Redirect to login page on error

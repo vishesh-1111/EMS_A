@@ -4,6 +4,7 @@ import { Label } from "../../../components/ui/label";
 import { Input } from "../../../components/ui/input";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from '@tanstack/react-query';
 export default function UserLoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -11,6 +12,8 @@ export default function UserLoginForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+  const queryclient = useQueryClient();
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,6 +38,10 @@ export default function UserLoginForm() {
         setErrorMessage(errorData.message || "Login failed. Please try again.");
         return;
       }
+      queryclient.invalidateQueries({
+        queryKey: ['fetchuser'],
+        exact: true, 
+      });
       console.log('redirecting');
       router.push('/');
     };
