@@ -22,14 +22,14 @@ export default function HandleLogout(){
               });
         
                setIsLoggedOut(true);
+               queryclient.invalidateQueries({
+                 queryKey: ['fetchuser'],
+                 exact: true, 
+                 refetchInactive: true, 
+               });
               queryclient.invalidateQueries({
                 queryKey: ['bookings'],
 
-                refetchInactive: true, 
-              });
-              queryclient.invalidateQueries({
-                queryKey: ['fetchuser'],
-                exact: true, 
                 refetchInactive: true, 
               });
               queryclient.invalidateQueries({
