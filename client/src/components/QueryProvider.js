@@ -12,20 +12,20 @@ const ReactQueryDevtoolsProduction = lazy(() =>
 );
 
 export default function QueryClientProviderComponent({ children }) {
+  const [queryClient] = useState(() => new QueryClient({  // Initialize only once
+    defaultOptions: {
+      queries: {
+        staleTime: Infinity, // Set default stale time for all queries
+      },
+    },
+  }));
+
   const [showDevtools, setShowDevtools] = useState(false);
 
   useEffect(() => {
-    // @ts-ignore
+    // Toggle devtools via window
     window.toggleDevtools = () => setShowDevtools((old) => !old);
   }, []);
-
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 1000 * 60 * 5, // added the staleTime for queries globally
-      },
-    },
-  });
 
   return (
     <QueryClientProvider client={queryClient}>

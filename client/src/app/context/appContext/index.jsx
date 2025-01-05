@@ -1,7 +1,7 @@
+
 import { useMemo, useReducer, createContext, useContext } from 'react';
 import { initialState, contextReducer } from './reducer';
 import contextActions from './actions';
-
 const AppContext = createContext();
 
 function AppContextProvider({ children }) {

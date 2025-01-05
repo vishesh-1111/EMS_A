@@ -30,6 +30,7 @@ UserRouter
 })
 
 .post('/login',async(req,res)=>{
+    res.setHeader('Cache-Control', 'public, max-age=3600');
   const {email , password} = req.body;
   console.log(email,password);
   const User = await user.findOne(
