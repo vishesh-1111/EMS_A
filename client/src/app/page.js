@@ -38,8 +38,8 @@ export default function HomePage() {
   const { data: user, isLoading, isError, error } = useQuery({
     queryFn: fetchUser, 
     queryKey: ['fetchuser'],
-    staleTime: 1000*10, 
-    cacheTime: 1000 * 20 
+    staleTime: 1000*60*10, 
+    cacheTime: 1000*60*20 
   });
 
   // Redirect to login page on error
