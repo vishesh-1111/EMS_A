@@ -2,19 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import BookEvent from '../../../components/BookEvent';
+import { useQuery } from '@tanstack/react-query';
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
-async function fetchEventData(id) {
-  const response = await fetch(`${serverUrl}/events/${id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
 
-  const result = await response.json();
-  return result;
-}
 async function fetchsessionData(id) {
   const response = await fetch(`${serverUrl}/reservations/event/${id}`, {
     method: "GET",
@@ -32,12 +22,31 @@ async function fetchsessionData(id) {
 
 export default function EventPage() {
   const [existingSession,setExistingSession] = useState(null);
-  const [event, setEvent] = useState(null);
   const [standardTickets, setStandardTickets] = useState(0);
   const [vipTickets, setVipTickets] = useState(0);
   const [cost, setCost] = useState(0);
   const [isBooking, setIsBooking] = useState(false); // New state to track booking status
   const { id } = useParams();
+  
+  async function fetchEventData() {
+    console.log('fettchinggg');
+    const response = await fetch(`${serverUrl}/events/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+  
+    const result = await response.json();
+    return result;
+  }
+  const { data: event, isLoading, isError, error } = useQuery({
+    queryFn: fetchEventData, 
+    queryKey:[`${id}`],
+    staleTime: 1000*60*10, 
+    cacheTime: 1000*60*20 
+  });
   
 
   useEffect(() => {
@@ -49,14 +58,7 @@ export default function EventPage() {
 
   }, [id]); 
 
-  useEffect(() => {
-    const fetchEvent = async () => {
-      const eventData = await fetchEventData(id);
-      setEvent(eventData);
-    };
 
-    fetchEvent();
-  }, [id]); 
 
 
   const handleStandardTicketChange = (e) => {
@@ -90,7 +92,7 @@ export default function EventPage() {
     setIsBooking(true);
   };
 
-  if (!event) {
+  if (isLoading) {
     return <div>Loading event...</div>;
   }
 

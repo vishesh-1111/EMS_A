@@ -12,7 +12,7 @@ import RenderChatBot from '../components/ChatBot'
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function HomePage() {
-  console.log('rendered');
+  console.log('rendered ',serverUrl);
   const { Content } = Layout;
   const [isDashboardLoaded,setIsDashboardLoaded]=useState(null);
   const router = useRouter();
