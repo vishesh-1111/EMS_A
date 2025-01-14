@@ -1,27 +1,62 @@
+
+const { MongoDBAtlasVectorSearch } = require('@langchain/mongodb');
+const { HuggingFaceInferenceEmbeddings } = require('@langchain/community/embeddings/hf');
 const { createGroq } = require('@ai-sdk/groq');
 const { streamText } = require('ai');
-const { config } = require('dotenv');
 const { Router } = require('express');
-config();
+const {collection} = require('../mongodb/connection')
+const dotenv = require('dotenv');
+dotenv.config();
+
+
+  const embeddings = new HuggingFaceInferenceEmbeddings({
+    apiKey : process.env.HF_TOKEN,
+    model: 'sentence-transformers/all-mpnet-base-v2',
+
+  });
+
+
+  const vectorStore = new MongoDBAtlasVectorSearch(embeddings,{
+    collection:collection,
+    indexName:'index3',
+  });
+
+async function getcontext(query) {
+    try {
+        const docs = await vectorStore.similaritySearch(query);
+        if (!docs || docs.length === 0) {
+            return "No relevant documents found";
+        }
+
+        const context = docs[0].pageContent;
+       return context;
+    } catch (err) {
+        console.error('Error querying data:', err);
+        return "An error occurred";
+    }
+    
+}
+
 
 const StreamRouter = Router();
 const groq = createGroq({ apiKey: process.env.GROQ_API_KEY });
 
-// Stream function to handle streaming chunks to the client
 async function streamHolidayDescription(res, prompt) {
+  const context =await getcontext(prompt);
+
+  const newprompt = `Use the following pieces of context to answer the question at the end.\n\n${context}\n\nQuestion: ${prompt}`;
+
   try {
     const { textStream } = streamText({
       model: groq('llama-3.1-8b-instant'),
-      prompt,
+      prompt:newprompt,
+      temperature : 0.1,
     });
 
-    // Send streaming chunks to the client
     for await (const textPart of textStream) {
-      console.log('Streaming chunk:', textPart);
-      res.write(` ${textPart}\n\n`); // Send chunk as SSE data
+      res.write(` ${textPart}\n\n`); 
     }
 
-    // End the stream after completion
     res.end();
   } catch (error) {
     console.error('Error streaming text:', error);
@@ -36,7 +71,7 @@ StreamRouter.post('/stream', async (req, res) => {
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Connection', 'keep-alive');
 
-  console.log('Received prompt:', req.body.prompt);
+
 
   await streamHolidayDescription(res, req.body.prompt);
 });
