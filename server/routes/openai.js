@@ -6,6 +6,7 @@ const { streamText } = require('ai');
 const { Router } = require('express');
 const {collection} = require('../mongodb/connection')
 const dotenv = require('dotenv');
+const { default: errorMap } = require('zod/locales/en.js');
 dotenv.config();
 
 
@@ -60,7 +61,7 @@ async function streamHolidayDescription(res, prompt) {
     res.end();
   } catch (error) {
     console.error('Error streaming text:', error);
-    res.write(`data: ${JSON.stringify({ error: 'Streaming failed' })}\n\n`);
+    res.write(`data: ${error}  ${JSON.stringify({ errors: 'Streaming failed' })}\n\n`);
     res.end();
   }
 }
