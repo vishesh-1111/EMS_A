@@ -6,7 +6,6 @@ const { streamText } = require('ai');
 const { Router } = require('express');
 const {collection} = require('../mongodb/connection')
 const dotenv = require('dotenv');
-const { default: errorMap } = require('zod/locales/en.js');
 dotenv.config();
 
 
@@ -46,14 +45,14 @@ async function streamHolidayDescription(res, prompt) {
   const context =await getcontext(prompt);
 
   const newprompt = `Use the following pieces of context to answer the question at the end.\n\n${context}\n\nQuestion: ${prompt}`;
-
+  console.log(newprompt);
   try {
     const { textStream } = streamText({
       model: groq('llama-3.1-8b-instant'),
       prompt:newprompt,
       temperature : 0.1,
     });
-
+  
     for await (const textPart of textStream) {
       res.write(` ${textPart}\n\n`); 
     }
