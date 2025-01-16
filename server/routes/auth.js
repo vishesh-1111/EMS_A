@@ -11,7 +11,7 @@ authRouter.get(
 
 .get( '/google/callback',
     passport.authenticate( 'google', {
-      
+
       successRedirect: process.env.VERCEL_ORIGIN||process.env.LOCAL_ORIGIN,
       failureRedirect: `${process.env.VERCEL_ORIGIN||process.env.LOCAL_ORIGIN}/login/user`
     })
