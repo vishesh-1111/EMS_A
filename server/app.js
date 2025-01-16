@@ -1,14 +1,17 @@
 const bodyParser = require('body-parser');
 const  {server,io,app} = require('./socketio')
+const {passport} = require('./authhelper/auth')
+const session = require('express-session');
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 const cors = require('cors');
-const dburl=process.env.MONGOURL;
+const dburl=process.env.LOCAL_MONGO_URL||process.env.MONGOURL;
 const userrouter = require('./routes/user');
 const StreamRouter = require('./routes/openai');
 const adminrouter = require('./routes/admin');
 const { eventRouter } = require('./routes/event');
+const authRouter =require('./routes/auth');
 const  Reservationrouter  = require('./routes/reservation');
 const BookingsRouter = require('./routes/bookings');
 const { PaymentRouter } = require('./routes/payment');
@@ -26,6 +29,9 @@ app.use(cors({
   credentials: true,  
 }));
 
+app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 io.on('connection', (socket) => {
@@ -67,6 +73,7 @@ app.use('/bookings',BookingsRouter);
 app.use('/payment',PaymentRouter);
 app.use('/reservations',Reservationrouter);
 app.use('/ai',StreamRouter);
+app.use('/auth',authRouter);
 
 server.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

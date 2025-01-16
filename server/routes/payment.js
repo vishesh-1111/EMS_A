@@ -5,7 +5,6 @@ const {booking} = require('../models/booking');
 const { reservation } = require('../models/reservation');
 const {user} = require('../models/user');
 const { io } = require('../socketio');
-const { ReturnDocument } = require('mongodb');
 
 PaymentRouter
 .get('/history',async(req,res)=>{

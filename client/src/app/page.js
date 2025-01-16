@@ -11,13 +11,13 @@ import Dashboard from '../components/history/page';
 import RenderChatBot from '../components/ChatBot'
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
+
 export default function HomePage() {
   console.log('rendered ',serverUrl);
   const { Content } = Layout;
   const [isDashboardLoaded,setIsDashboardLoaded]=useState(null);
   const router = useRouter();
-
-  const fetchUser = async () => {
+   const fetchUser = async () => {
     console.log('fetching....');
     const response = await fetch(`${serverUrl}/user/temp`, {
       method: "GET",
@@ -31,19 +31,20 @@ export default function HomePage() {
        router.push('/login/user');
        return null;
     }
-
-    return response.json();
+    const user = await response.json();
+    console.log(user);
+    return user;
   };
-
+  
   const { data: user, isLoading, isError, error } = useQuery({
     queryFn: fetchUser, 
     queryKey: ['fetchuser'],
     staleTime: 1000*60*10, 
     cacheTime: 1000*60*20 
   });
-
+  
   // Redirect to login page on error
-
+  
   if (isLoading) {
     return <div>Loading...</div>;
   }

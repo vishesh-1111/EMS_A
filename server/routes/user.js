@@ -8,13 +8,13 @@ const cookie = require('cookie');
 
 UserRouter
 .get('/temp',async(req,res)=>{
-
+  
     if(!req.user)return res.status(401).json(
       {
         "message" : "User not logged in",
       }
     );
- 
+    console.log(req.user)
    return res.status(200).json(req.user);
 })
 
@@ -78,6 +78,10 @@ UserRouter
     
   })
   .get('/logout',(req,res)=>{
+    console.log('loging out..');
+    req.logOut((err)=>{
+      console.log(err);
+    });
     console.log('hi');
     res.cookie('token','',{
       maxAge:1,

@@ -13,7 +13,10 @@ try {
   return next(err);
 
 }
-req.user=payload;
+
+if(!req.user){
+  req.user=payload;
+}
 return next();
 }
 

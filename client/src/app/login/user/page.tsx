@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Label } from "../../../components/ui/label";
 import { Input } from "../../../components/ui/input";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { useQueryClient } from '@tanstack/react-query';
+
+
 export default function UserLoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -12,39 +13,34 @@ export default function UserLoginForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
-  const queryclient = useQueryClient();
-
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage(""); // Reset error message
-    
-    const formData = {
-      email,
-      password,
-    };
-      const response = await fetch(`${serverUrl}/user/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-        credentials: "include",
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        setErrorMessage(errorData.message || "Login failed. Please try again.");
-        return;
-      }
-      queryclient.invalidateQueries({
-        queryKey: ['fetchuser'],
-        exact: true, 
-      });
-      console.log('redirecting');
-      router.push('/');
-    };
+
+    const formData = { email, password };
+    const response = await fetch(`${serverUrl}/user/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      setIsLoading(false);
+      setErrorMessage(errorData.message || "Login failed. Please try again.");
+      return;
+    }
+
+    console.log("redirecting");
+    router.push("/");
+  };
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${serverUrl}/auth/google`;
+  };
 
   return (
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
@@ -87,6 +83,13 @@ export default function UserLoginForm() {
         >
           {isLoading ? "Loading..." : "Login "}
           <BottomGradient />
+        </button>
+
+        <button
+          onClick={handleGoogleLogin}
+          className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md w-full mt-4 transition duration-300"
+        >
+          Login with Google
         </button>
 
         <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
