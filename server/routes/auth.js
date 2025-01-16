@@ -1,6 +1,7 @@
 const {Router}  = require('express');
 const authRouter = Router();
 const passport = require('passport')
+require('dotenv').config();
 
 authRouter
 authRouter.get(
@@ -11,8 +12,8 @@ authRouter.get(
 .get( '/google/callback',
     passport.authenticate( 'google', {
       
-      successRedirect: 'http://localhost:3000',
-      failureRedirect: 'http://localhost:3000/login/user'
+      successRedirect: process.env.VERCEL_ORIGIN||process.env.LOCAL_ORIGIN,
+      failureRedirect: `${process.env.VERCEL_ORIGIN||process.env.LOCAL_ORIGIN}/login/user`
     })
   );
 
