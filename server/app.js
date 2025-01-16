@@ -6,7 +6,7 @@ require('dotenv').config();
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 const cors = require('cors');
-const dburl=process.env.LOCAL_MONGO_URL||process.env.MONGOURL;
+const dburl=process.env.MONGOURL||process.env.LOCAL_MONGO_URL;
 const userrouter = require('./routes/user');
 const StreamRouter = require('./routes/openai');
 const adminrouter = require('./routes/admin');
