@@ -24,7 +24,7 @@ app.use(require('express').json());
 app.use(passport.initialize());
 app.use(session({secret:'cat'}));
 app.use(cors({
-  origin: process.env.LOCAL_ORIGIN||process.env.VERCEL_ORIGIN,
+  origin: process.env.VERCEL_ORIGIN||process.env.LOCAL_ORIGIN,
   
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['GET', 'POST','DELETE','PUT','OPTIONS'],
