@@ -9,7 +9,7 @@ passport.use(new GoogleStrategy({
   callbackURL: `${process.env.serverurl}/auth/google/callback`,
   passReqToCallback: true,
   accessType: 'offline',
-  prompt: 'consent'
+  prompt: 'consent',
 },
 async function(request, accessToken, refreshToken, profile, done) {
   try {
