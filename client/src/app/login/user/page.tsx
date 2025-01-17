@@ -4,6 +4,7 @@ import { Label } from "../../../components/ui/label";
 import { Input } from "../../../components/ui/input";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 
 export default function UserLoginForm() {
@@ -13,6 +14,7 @@ export default function UserLoginForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+  const queryClient = useQueryClient(); 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,12 +29,14 @@ export default function UserLoginForm() {
       credentials: "include",
     });
 
+    const data = await response.json();
     if (!response.ok) {
-      const errorData = await response.json();
       setIsLoading(false);
-      setErrorMessage(errorData.message || "Login failed. Please try again.");
+      setErrorMessage(data.message || "Login failed. Please try again.");
       return;
     }
+   
+ queryClient.setQueryData(['fetchuser'],data.payload);
 
     console.log("redirecting");
     router.push("/");
@@ -86,6 +90,7 @@ export default function UserLoginForm() {
         </button>
 
         <button
+        type="button"
           onClick={handleGoogleLogin}
           className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md w-full mt-4 transition duration-300"
         >

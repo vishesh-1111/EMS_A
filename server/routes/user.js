@@ -31,6 +31,7 @@ UserRouter
 
 .post('/login',async(req,res)=>{
   const {email , password} = req.body;
+  console.log('body',req.body);
   console.log(email,password);
   const User = await user.findOne(
     {
@@ -62,7 +63,9 @@ UserRouter
         path :  "/",
       })
       ) 
+
       return res.status(200).json({
+        payload,
         success: true,
         message: "Login successful",
         token: token, // Include token in the response body if needed
@@ -80,9 +83,8 @@ UserRouter
   .get('/logout',(req,res)=>{
     console.log('loging out..');
     req.logOut((err)=>{
-      console.log(err);
+
     });
-    console.log('hi');
     res.cookie('token','',{
       maxAge:1,
       httpOnly : false,

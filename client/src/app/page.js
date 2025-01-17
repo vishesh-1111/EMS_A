@@ -53,7 +53,7 @@ export default function HomePage() {
   }
   if(!user){
     return (
-      <div></div>
+      <></>
     )
   }
   return (

@@ -11,7 +11,6 @@ eventRouter
     
     .get('/:id', async (req, res) => {
       try {
-        console.log('hi');
         const ob = await event.findById(req.params.id);
         
         if (!ob) {
