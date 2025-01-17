@@ -21,25 +21,17 @@ connectDB(dburl);
 const port = process.env.PORT || 5000;
 app.use(bodyParser.json()); 
 app.use(require('express').json());
-const allowedOrigins = [
-  process.env.VERCEL_ORIGIN, 
-  'http://localhost:3000'
-];
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: process.env.VERCEL_ORIGIN||process.env.LOCAL_ORIGIN,
+  
   allowedHeaders: ['Content-Type', 'Authorization'],
-  methods: ['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS'],
+  methods: ['GET', 'POST','DELETE','PUT','OPTIONS'],
   credentials: true,  
 }));
+
 app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
-app.use(passport.session());
+
 
 
 io.on('connection', (socket) => {

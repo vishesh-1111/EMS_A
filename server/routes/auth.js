@@ -15,18 +15,18 @@ authRouter.get(
     passport.authenticate('google', (err, user, info) => {
       if (err) {
         console.error('Error during authentication:', err);
-        return res.redirect(`${process.env.VERCEL_ORIGIN}/login/user`);
+        return res.redirect(`${process.env.LOCAL_ORIGIN || process.env.VERCEL_ORIGIN}/login/user`);
       }
       if (!user) {
         console.error('No user found:', info);
-        return res.redirect(`${process.env.VERCEL_ORIGIN}/login/user`);
+        return res.redirect(`${process.env.LOCAL_ORIGIN || process.env.VERCEL_ORIGIN}/login/user`);
       }
       req.login(user, (err) => {
         if (err) {
           console.error('Login failed:', err);
-          return res.redirect(`${process.env.VERCEL_ORIGIN}/login/user`);
+          return res.redirect(`${process.env.LOCAL_ORIGIN || process.env.VERCEL_ORIGIN}/login/user`);
         }
-        return res.redirect(process.env.VERCEL_ORIGIN);
+        return res.redirect(process.env.LOCAL_ORIGIN || process.env.VERCEL_ORIGIN);
       });
     })(req, res, next);
   }

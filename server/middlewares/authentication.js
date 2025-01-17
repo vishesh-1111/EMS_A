@@ -14,9 +14,8 @@ try {
 
 }
 
-if(!req.user){
   req.user=payload;
-}
+
 return next();
 }
 
