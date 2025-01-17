@@ -1,7 +1,7 @@
 const bodyParser = require('body-parser');
 const  {server,io,app} = require('./socketio')
-const {passport} = require('./authhelper/auth')
 const session = require('express-session');
+const {passport} = require('./authhelper/auth')
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
@@ -21,16 +21,16 @@ connectDB(dburl);
 const port = process.env.PORT || 5000;
 app.use(bodyParser.json()); 
 app.use(require('express').json());
+app.use(passport.initialize());
+app.use(session({secret:'cat'}));
 app.use(cors({
-  origin: process.env.VERCEL_ORIGIN||process.env.LOCAL_ORIGIN,
+  origin: process.env.LOCAL_ORIGIN||process.env.VERCEL_ORIGIN,
   
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['GET', 'POST','DELETE','PUT','OPTIONS'],
   credentials: true,  
 }));
 
-app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
-app.use(passport.initialize());
 
 
 

@@ -41,6 +41,7 @@ passport.use(
           accessToken,
           name: user.name,
           email: user.email,
+          role : 'user',
         };
 
         const jwtToken = jwt.sign(tokenPayload, 'secret', {

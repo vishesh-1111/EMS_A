@@ -58,6 +58,7 @@ export default function HomePage() {
   }
   return (
     <Layout>
+      
       <NavBar user={user} setUser={() => {}}></NavBar>
       <Layout>
         <HeaderContent user={user} />
