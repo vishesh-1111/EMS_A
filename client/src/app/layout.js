@@ -39,6 +39,7 @@ const Layout = ({ children }) => {
 
                   <div className="flex-1 bg-gray-100 p-4 overflow-auto">
                     {children}
+                    <Footer/>
                   </div>
                 </div>
               </AppContextProvider>
