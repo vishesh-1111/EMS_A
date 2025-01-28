@@ -1,4 +1,5 @@
 "use client";
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 import React, { useEffect, useState } from "react";
 import {
@@ -19,7 +20,7 @@ import {
   useEffect(() => {
    (async()=>{
 
-        const result =await fetch("http://localhost:5000/payment/create-payment-intent", {
+        const result =await fetch(`${serverUrl}/payment/create-payment-intent`, {
             credentials:"include",
             method: "POST",
             headers: {
@@ -54,7 +55,7 @@ import {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `http://localhost:3000/payment-success?amount=${amount}`,
+        return_url: `https://my-first-react-app-jade.vercel.app//payment-success?amount=${amount}`,
       },
     });
 
