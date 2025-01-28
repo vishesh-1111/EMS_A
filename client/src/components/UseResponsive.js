@@ -70,5 +70,6 @@ export default function useResponsive() {
       }
     };
   }, []);
+  console.log(state);
   return { screenSize: state, isMobile: !state.md };
 }

@@ -6,7 +6,7 @@ const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 const fetchPaymentHistory = async () => {
   console.log('fetching payments..');
-  const response = await fetch(`${serverUrl}/payment/history`, {
+  const response = await fetch(`${serverUrl}/bookings`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -24,8 +24,8 @@ const fetchPaymentHistory = async () => {
 
 export default function RenderPaymentHistory() {
   const { data: paymentHistory, isLoading, error } = useQuery(
-    ['userpayments'], // Query key
-    fetchPaymentHistory, // Fetching function
+    ['userpayments'], 
+    fetchPaymentHistory, 
     {
       staleTime: Infinity,  
       refetchOnMount : true,
@@ -65,7 +65,7 @@ export default function RenderPaymentHistory() {
                     {payment._id}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">
-                    ${payment.cost}
+                    ${payment.amount}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {new Date(payment.createdAt).toLocaleDateString()}

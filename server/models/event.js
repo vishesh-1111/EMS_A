@@ -1,4 +1,5 @@
 const mongoose =require('mongoose');
+const { array } = require('zod');
 
 
 
@@ -11,8 +12,13 @@ const eventSchema = new mongoose.Schema({
     
     path : {
         type : String,
+        required : true
     },
-
+     
+    duration : {
+        type :String,
+        required : true
+    },
     startTime: {
         type: Date,
         required: true
@@ -30,13 +36,17 @@ const eventSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    totalseats : {
+    standardseats : {
       type : Number,
       required : true
     },
-    reservedSeats: {
-        type: Number,
-        default: 0
+    vipseats : {
+        type : Number,
+        required : true
+      },
+    tags : {
+        type :Array,
+        required :true,
     },
     description : {
         type : String,
@@ -62,11 +72,6 @@ const eventSchema = new mongoose.Schema({
         required : true,
         default : false
     },
-    createdby : {
-         type : mongoose.Schema.Types.ObjectId,
-         ref : 'admin',
-         required : true
-    }   
     
 });
 
@@ -84,8 +89,6 @@ eventSchema.pre('save', function(next) {
 
 const event=mongoose.model('event',eventSchema);
 
-module.exports={
-    event,
-}
+module.exports=event;
 
 

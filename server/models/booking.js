@@ -13,14 +13,11 @@ const BookingSchema = new Schema(
       ref: 'event',
       required: true
     },
-    vipTickets: {
+    amount: {
       type: Number,
       default: 0
     },
-    standardTickets: {
-      type: Number,
-      default: 0
-    },
+  
     bookingDate: {
       type: Date,
       default: Date.now

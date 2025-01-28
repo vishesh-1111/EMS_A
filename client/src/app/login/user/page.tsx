@@ -5,7 +5,10 @@ import { Input } from "../../../components/ui/input";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
+import GoogleButton from 'react-google-button'
+import {
+  IconBrandGoogle,
+} from "@tabler/icons-react";
 
 export default function UserLoginForm() {
   const router = useRouter();
@@ -47,9 +50,9 @@ export default function UserLoginForm() {
   };
 
   return (
-    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
+    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-4  shadow-input bg-white dark:bg-black">
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">User Login</h2>
-      <form className="my-8" onSubmit={handleSubmit}>
+      <form className="my-8 " onSubmit={handleSubmit}>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="email">Email Address</Label>
           <Input
@@ -88,15 +91,14 @@ export default function UserLoginForm() {
           {isLoading ? "Loading..." : "Login "}
           <BottomGradient />
         </button>
-
-        <button
-        type="button"
-          onClick={handleGoogleLogin}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md w-full mt-4 transition duration-300"
-        >
-          Login with Google
-        </button>
-
+        
+        <div className="flex justify-center items-start min-h-screen pt-8">
+  <GoogleButton
+    className="bg-black"
+    type="dark" // can be light or dark
+    onClick={handleGoogleLogin}
+  />
+</div>
         <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
       </form>
     </div>

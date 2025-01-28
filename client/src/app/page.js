@@ -57,9 +57,8 @@ export default function HomePage() {
     )
   }
   return (
-    <Layout>
-      
-      <NavBar user={user} setUser={() => {}}></NavBar>
+    <div className="">
+    <Layout>      
       <Layout>
         <HeaderContent user={user} />
         <Content
@@ -70,14 +69,13 @@ export default function HomePage() {
             padding: '0 50px',
             maxWidth: 1400,
           }}
-        >
+          >
           <Dashboard user={user} setIsDashboardLoaded={setIsDashboardLoaded}></Dashboard>
           <RenderAllEvents  user={user}></RenderAllEvents>
         </Content>
-        <RenderChatBot>
 
-        </RenderChatBot>
       </Layout>
     </Layout>
+          </div>
   );
 }

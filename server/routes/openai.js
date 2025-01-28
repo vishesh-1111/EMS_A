@@ -23,12 +23,13 @@ dotenv.config();
 
 async function getcontext(query) {
     try {
-        const docs = await vectorStore.similaritySearch(query);
+        const docs = await vectorStore.similaritySearch(query,2);
         if (!docs || docs.length === 0) {
             return "No relevant documents found";
         }
-
-        const context = docs[0].pageContent;
+       
+        const context = docs[0].pageContent + docs[1].pageContent;
+        console.log(docs);
        return context;
     } catch (err) {
         console.error('Error querying data:', err);
@@ -44,7 +45,9 @@ const groq = createGroq({ apiKey: process.env.GROQ_API_KEY });
 async function streamHolidayDescription(res, prompt) {
   const context =await getcontext(prompt);
 
-  const newprompt = `Use the following pieces of context to answer the question at the end.\n\n${context}\n\nQuestion: ${prompt}`;
+  const newprompt = `Use the following pieces of context to answer the question at the end and if user asks multiple questions at once answer each one individually 
+  and if users question does not match any context tell the user please ask relevant questions
+  .\n\n${context}\n\nQuestion: ${prompt}`;
   console.log(newprompt);
   try {
     const { textStream } = streamText({

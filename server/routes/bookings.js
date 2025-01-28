@@ -11,15 +11,15 @@ BookingsRouter
   try {
      console.log('called');
     const userid = `${req.user._id}`
-    console.log(userid);
     const userBookings = await booking.find({userid:userid});
+    console.log(userBookings);
     
   
 
     //console.log(userBookings);
-    if (userBookings.length === 0) {
-      return res.status(404).json({ message: 'No bookings found' });
-    }
+    // if (userBookings.length === 0) {
+    //   return res.status(404).json({ message: 'No bookings found' });
+    // }
     
     //console.log(userBookings);
     

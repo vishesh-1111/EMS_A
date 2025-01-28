@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css?family=Exo+2&display=swap');
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+/* body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Exo 2', sans-serif;
+  background: #222222;
+  color: white;
+  font-size: 18px;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+} */
+
+.App {
+  text-align: center;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+.Movies {
+  margin-bottom: 32px; /* Increased spacing */
+  background-color: white;
+}
+
+.Movies select {
+  appearance: none;
+  background: white;
+  font-size: 18px; /* Increased font size */
+  margin-left: 16px; /* Increased spacing */
+  border-radius: 6px; /* Slightly larger rounding */
+  padding: 8px 32px; /* Increased padding */
+}
+
+.ShowCase {
+  margin: 0 0 64px; /* Increased spacing */
+  padding: 16px; /* Increased padding */
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  background: #3b3b3b;
+  border-radius: 6px; /* Larger rounding */
+  color: #7e7e7e;
+}
+
+.ShowCase li {
+  margin: 0 16px; /* Increased spacing */
+}
+
+.Cinema {
+  margin-bottom: 24px; /* Increased spacing */
+  perspective: 500px; /* Enhanced perspective */
+  display: grid;
+  place-items: center;
+  grid-gap: 32px; /* Increased grid gap */
+}
+
+.Cinema .screen {
+  height: 100px; /* Increased height */
+  background: gray;
+  width: 100%;
+  transform: rotateX(-30deg) scale(1.1);
+  box-shadow: 0 4px 14px 3px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+}
+
+.seat.vip {
+  background: gold;
+}
+
+.Cinema .seats {
+  display: grid;
+  grid-gap: 10px; /* Increased spacing */
+  grid-template-columns: repeat(8,1fr);
+  align-items: center;
+}
+
+.Cinema .seats .seat:nth-of-type(8n + 2) {
+  margin-right: 16px; /* Increased spacing */
+}
+
+.Cinema .seats .seat:nth-of-type(8n + 6) {
+  margin-right: 16px; /* Increased spacing */
+}
+
+.Cinema .seats .seat:not(.occupied):hover,
+.Cinema .seats .seat:not(.occupied):focus {
+  cursor: pointer;
+  background: #c1eac5;
+  transform: scale(1.4); /* Increased hover effect */
+}
+
+.Cinema .seats:nth-child(2) {
+  margin-top: 30px; /* Add gap between VIP and standard rows */
+}
+
+.Cinema .seats .seat.selected::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 2px;
+  width: 16px; /* Increased size */
+  height: 16px; /* Increased size */
+  border-radius: 100%;
+  background: transparent;
+  border: 1px solid #7bc47f;
+  animation: show-off 0.8s;
+  visibility: hidden;
+}
+
+@keyframes show-off {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+.seat {
+  display: inline-block;
+  background: #626262;
+  width: 24px; /* Increased width */
+  height: 18px; /* Increased height */
+  border-top-left-radius: 12px; /* Enhanced rounding */
+  border-top-right-radius: 12px; /* Enhanced rounding */
+  transition: transform 0.3s ease-in-out;
+
+  position: relative;
+  top: 1px;
+}
+
+.seat.selected {
+  background: #7bc47f !important;
+}
+
+.seat.occupied {
+  background: #cfcfcf;
+}
+
+.seat.userseat {
+  background: red;
+}
+
+.info .count {
+  color: #7bc47f;
+  font-size: 20px; /* Increased font size */
+}
+
+.info .total {
+  color: #7bc47f;
+  font-size: 20px; /* Increased font size */
+}

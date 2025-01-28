@@ -13,25 +13,17 @@ const ReservationSchema = new Schema(
       ref: 'event',
       required: true
     },
-    vipTickets: {
-      type: Number,
-      default: 0
+    seats: {
+      type: Array,
+      default: [],
     },
-    standardTickets: {
-      type: Number,
-      default: 0
-    },
-    cost : {
+    amount : {
       type : Number,
       required : true
     },
-    isActive: {
-      type: Boolean,
-      default: true
-    },
     status: {
       type: String,
-      default: 'pending'
+      default: 'free'
     },
     reservationDate: {
       type: Date,
@@ -41,7 +33,7 @@ const ReservationSchema = new Schema(
     expiresAt: {
       type: Date,
       default: () => {
-        return new Date(Date.now() + 2.0 * 60 * 1000); 
+        return new Date(Date.now() +  60 * 1000); 
       }
     }
   },

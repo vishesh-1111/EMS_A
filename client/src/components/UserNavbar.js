@@ -11,6 +11,7 @@ import logoIcon from '@/styles/bbz.jpeg'
 import lgtxt from '@/styles/images/logo-text.svg';
 import RenderPaymentHistory from './history/page.js'
 import useResponsive from '../components/UseResponsive';
+import RenderChatBot from '../components/ChatBot'
 
 import {
   SettingOutlined,
@@ -29,12 +30,13 @@ import {
   WalletOutlined,
   ReconciliationOutlined,
   RotateLeftOutlined,
+  CommentOutlined
 } from '@ant-design/icons';
 import { Router } from 'next/router';
 
 const { Sider } = Layout;
 
-export default function Navigation({user}) {
+export default function Navigation() {
   
   const { isMobile } = useResponsive();
   
@@ -66,7 +68,11 @@ function Sidebar({ collapsible, isMobile = false }) {
        label: <Link href={'/paymenthistory'}>{translate('Payment History')}</Link>,
     
     },
-
+    {
+      key: 'Chat Assistance',
+      label: <Link href={'/chat-ai'}>{translate('Chat Assistance')}</Link>,
+      icon: <CommentOutlined/>,
+    },
  
 
     {

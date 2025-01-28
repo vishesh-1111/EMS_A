@@ -1,8 +1,14 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import BookEvent from '../../../components/BookEvent';
 import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import GlassIcon from '@mui/icons-material/LocalBar';
+import Link from 'next/link'
+import {CategorySharp,DescriptionTwoTone,Tag,LocationOnSharp} from '@mui/icons-material'
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 async function fetchsessionData(id) {
@@ -27,7 +33,8 @@ export default function EventPage() {
   const [cost, setCost] = useState(0);
   const [isBooking, setIsBooking] = useState(false); // New state to track booking status
   const { id } = useParams();
-  
+  const [showMore, setShowMore] = useState(false);
+
   async function fetchEventData() {
     console.log('fettchinggg');
     const response = await fetch(`${serverUrl}/events/${id}`, {
@@ -48,138 +55,100 @@ export default function EventPage() {
     cacheTime: 1000*60*20 
   });
   
-
-  useEffect(() => {
-    const fetchSession = async () => {
-      const eventSessiondata = await fetchsessionData(id);
-      setExistingSession(eventSessiondata);
-    };
-    fetchSession();
-
-  }, [id]); 
-
-
-
-
-  const handleStandardTicketChange = (e) => {
-    const value = Math.min(e.target.value, availableSeats()); 
-    setCost(value * event.ticketprice.standard + vipTickets * event.ticketprice.vip);
-    setStandardTickets(value);
-  };
-
-  const handleVipTicketChange = (e) => {
-    const value = Math.min(e.target.value, availableSeats()); 
-    setVipTickets(value);
-    setCost(value * event.ticketprice.vip + standardTickets * event.ticketprice.standard);
-  };
-
-  const availableSeats = () => {
-    return event.totalseats - event.reservedSeats;
-  };
-
-  const Handlebooking = () => {
-    const totalTickets = standardTickets + vipTickets;
-    if (totalTickets <= 0) {
-      alert('Please select at least one ticket');
-      return;
-    }
-    if (totalTickets > 5) {
-      alert('You cannot book more than 5 tickets at once');
-      return;
-    }
-
-    // Set booking status to true when "Book" is clicked
-    setIsBooking(true);
-  };
-
-  if (isLoading) {
-    return <div>Loading event...</div>;
-  }
-
-  if(existingSession){
-    const expiredDate = new Date(existingSession.expiresAt).getTime();
-    const currentDate =  Date.now();
-                                         
-    console.log(currentDate,expiredDate);
-    const differenceInMilliseconds = expiredDate - currentDate;
-    const remainingSeconds = Math.max(0, differenceInMilliseconds / 1000);
-
+  if(isLoading){
     return(
-      <BookEvent event={event} cost={existingSession.cost}
-       vipTickets={existingSession.vipTickets} 
-       standardTickets={existingSession.standardTickets}
-       remainingSeconds = {remainingSeconds}
-       userReservation = {existingSession}
-       />
+      <div>
+        Loading..
+      </div>
     )
   }
-
-
-
   return (
-    <div style={{ marginTop: '40px', border: '1px solid #e2e8f0', padding: '20px', borderRadius: '8px', backgroundColor: '#fff' }}>
-      <p>Title: {event.name}</p>
-      <p>Category: {event.category}</p>
-      <p>Location: {event.location}</p>
-      <p>Standard ticket: {event.ticketprice.standard}$</p>
-      <p>VIP ticket: {event.ticketprice.vip}$</p>
-      <p>Available seats: {availableSeats()}</p>
+    
+    <div className="mt-1">
+      
+      <div className="relative">
+      <div style={{ position: 'relative', width: '100%', height: '400px' }}>
+  <Image
+    src="https://picsum.photos/seed/picsum/1800/400"
+    alt={event.name}
+    layout="fill"
+    objectFit="cover"
+    className="opacity-70" // Slightly dim the background
+  />
+</div>
 
-      <div style={{ border: '1px solid #e2e8f0', padding: '20px', marginTop: '20px', borderRadius: '8px' }}>
-        <div>
-          <label>Select Standard Tickets: </label>
-          <input
-            type="number"
-            value={standardTickets}
-            onChange={handleStandardTicketChange}
-            min={0}
-            max={availableSeats()}
-            style={{ padding: '8px', marginLeft: '10px', borderRadius: '4px', border: '1px solid #e2e8f0' }}
-          />
+<div className="absolute inset-0 p-8 md:p-16 flex flex-col md:flex-row items-start md:items-center">
+  <div className="md:w-1/3 mr-4 md:mr-4">  {/* Adjust the margin here */}
+    <Image
+      src='https://picsum.photos/seed/seed/400/500'
+      alt={event.name}
+      width={300}
+      height={450}
+      className="rounded-lg shadow-lg"
+    />
+
+  </div>
+  <div className="md:w-2/3 text-white">
+    <h1 className="text-4xl font-bold mb-4">{event.title}</h1>
+    <div className="flex items-center mb-2">
+      <span className="text-black mr-2">{event.rating}</span>
+
+    </div>
+    <p className="mb-4 text-black">{event.language}</p>
+    <p className="mb-4 text-black">
+     <LocationOnSharp/>
+      {event.location} 
+    </p>
+    <p className="mb-4 text-black">
+      <HourglassEmptyIcon />
+      {event.duration||"3 hrs"} 
+    </p>
+    <p className='mb-4 text-black'> 
+    <CalendarTodayIcon />
+    {event.startTime.slice(0,10)} 
+    </p>
+    <p className='mb-4 text-black'> 
+    <CategorySharp />
+    {event.category} 
+    </p>
+    {/* <button 
+    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+    onClick={()=>{
+      <Link href={'/'}>
+      </Link>
+    }}
+    >
+    
+      Book tickets
+    </button> */}
+    <Link href={`/seatmap/${event._id}`}>
+    <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" 
+    >
+     Book tickets
+    </button>
+    </Link>
+  </div>
+</div>
+
+      </div>
+      <div className="bg-white p-8 md:p-16">
+        <div >
+          <Tag fontSize='48px'></Tag>
+          {event.tags||"Pop,Gen-z"}
         </div>
-        <div style={{ marginTop: '10px' }}>
-          <label>Select VIP Tickets: </label>
-          <input
-            type="number"
-            value={vipTickets}
-            onChange={handleVipTicketChange}
-            min={0}
-            max={availableSeats()}
-            style={{ padding: '8px', marginLeft: '10px', borderRadius: '4px', border: '1px solid #e2e8f0' }}
-          />
-        </div>
+        <h2 className="text-2xl font-bold mb-4">About the Event</h2>
+        <p className="text-gray-700 leading-relaxed">
+          <DescriptionTwoTone/>
+          {showMore ? event.description : event.description.slice(0, 30)}
+          <button onClick={() => setShowMore(!showMore)} className="text-blue-500 ml-1">
+            {showMore ? 'Show less' : 'Show more'}
+          </button>
+        </p>
       </div>
 
-      <div style={{ marginTop: '20px', padding: '20px', backgroundColor: '#f7fafc', borderRadius: '8px' }}>
-        <p>{event.description}</p>
-        <button
-          onClick={Handlebooking}
-          style={{
-            padding: '16px 32px',
-            fontSize: '18px',
-            backgroundColor: '#6B46C1',
-            color: '#fff',
-            borderRadius: '12px',
-            cursor: 'pointer',
-            transition: 'background-color 0.3s',
-            border: 'none'
-          }}
-          onMouseOver={(e) => e.target.style.backgroundColor = '#805ad5'}
-          onMouseOut={(e) => e.target.style.backgroundColor = '#6B46C1'}
-        >
-          Book
-        </button>
-      </div>
-
-      <div style={{ marginTop: '20px', padding: '10px', backgroundColor: '#f7fafc', borderRadius: '8px' }}>
-        <strong>Cost:</strong> {cost} + GST
-      </div>
-
-      {isBooking && (
-        <div style={{ marginTop: '20px' }}>
-          <BookEvent event={event} cost={cost} vipTickets={vipTickets} standardTickets={standardTickets}/>
-        </div>
-      )}
+   
     </div>
   );
+     
+  
 }

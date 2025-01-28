@@ -45,7 +45,7 @@ const deleteEvent = async (id, setEvents) => {
 export function EventCard({ event, user, setEvents, deleteEvent }) {
   return (
     <div suppressHydrationWarning={true}>
-      <Card sx={{ maxWidth: 340, display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Card sx={{ maxWidth: 340, display: 'flex', flexDirection: 'column', height: '100%'}}>
         <Box sx={{ flexGrow: 1 }}>
           <CardActionArea>
             <Link href={`/event/${event._id}`} passHref>

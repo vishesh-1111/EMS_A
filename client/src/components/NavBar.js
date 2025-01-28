@@ -3,11 +3,11 @@ import AdminNavbar from '../components/AdminNavbar'
 import UserNavbar from '../components/UserNavbar'
 
 
-export default function NavBar({user,setUser}){
+export default function NavBar(){
     return (
         <>    
-            {user?.role === 'user' && <UserNavbar user={user} setUser={setUser}/>}
-            {user?.role === 'admin' && <AdminNavbar />} 
+             <UserNavbar/>
+         
         </>
     );
 }

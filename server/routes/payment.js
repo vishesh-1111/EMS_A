@@ -5,6 +5,11 @@ const {booking} = require('../models/booking');
 const { reservation } = require('../models/reservation');
 const {user} = require('../models/user');
 const { io } = require('../socketio');
+require('dotenv').config();
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: "2023-10-16",
+});
+
 
 PaymentRouter
 .get('/history',async(req,res)=>{
@@ -24,8 +29,7 @@ PaymentRouter
 
 })
 .post('/', async (req, res) => {
-    const { event, cost, cardNumber, expirationDate,
-         vipTickets, standardTickets } = req.body;
+    const {userReservation,cardNumber,expirationDate,} = req.body;
     if (!req.user) {
         return res.status(404).json({
             message: "User not found",
@@ -33,7 +37,7 @@ PaymentRouter
         });
     }
 
-    const eventid = event._id;
+    const eventid = userReservation.eventid;
 
     const session = req.cookies[`${eventid}`];
 
@@ -44,7 +48,7 @@ PaymentRouter
         });
     }
 
-
+     
     res.clearCookie(`${eventid}`, { path: '/' });
     const userid = req.user._id;
   try{
@@ -52,7 +56,7 @@ PaymentRouter
       const newPayment = new payment({
           userid,
           eventid,
-          cost,
+          cost:userReservation.amount,
           cardNumber,
           expirationDate: new Date(expirationDate)
         });
@@ -65,31 +69,25 @@ PaymentRouter
          message : err.message,
        })
     }
-        const existingBooking = await booking.findOne({ userid, eventid });
+      //  const existingBooking = await booking.findOne({ userid, eventid });
 
-    if (existingBooking) {
-        existingBooking.vipTickets += vipTickets;
-        existingBooking.standardTickets += standardTickets;
 
-        await existingBooking.save();
-    } else {
-        
         const newBooking = new booking({
             eventid,
             userid,
-            vipTickets,
-            standardTickets,
+            cost:userReservation.amount,
         });
         await newBooking.save();
         console.log(newBooking);
-    }
     
-    const reservationid = (JSON.parse(session))._id;
-    const userReservation = await reservation.findById(reservationid);
+    
     userReservation.status= 'success';
     userReservation.isActive=false;
     userReservation.expiresAt=0;
-    await userReservation.save();
+    await reservation.updateOne(
+        { _id: userReservation._id }, 
+        { $set: { ...userReservation} } 
+      );
     io.emit('reservationsuccess',userReservation,()=>{
         console.log('Admin ko pata chal gaya ki reservation successful ho gya hai');
        });
@@ -99,7 +97,33 @@ PaymentRouter
         success: true,
         token: 'abcd' 
     });
-});
+})
+.post('/create-payment-intent', async (req, res) => {
+  try {
+    console.log('body',req.body);
+    
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: req.body.amount,
+      currency: "usd",
+      automatic_payment_methods: { enabled: true },
+    });
+
+    // console.log(paymentIntent);
+    console.log("Payment Intent Status:", paymentIntent.status);
+    
+
+    return res.json({ clientSecret: paymentIntent.client_secret });
+  } catch (error) {
+    console.error("Internal Error:", error);
+    // Handle other errors (e.g., network issues, parsing errors)
+    return res.status(500).json(
+      { error: `Internal Server Error: ${error}` },
+    );
+  }
+  });
+
+
+
 
 module.exports = {
    PaymentRouter, 

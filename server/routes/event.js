@@ -1,6 +1,6 @@
 const express = require('express');
 const eventRouter = express.Router();
-const {event} = require('../models/event');
+const event = require('../models/event');
 const {isAdmin } = require('../middlewares/authentication');
 
 eventRouter

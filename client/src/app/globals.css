@@ -1,15 +1,15 @@
 
 
-@import '../styles/partials/rest.css';
+@import '../styles/partials/rest.css'; 
 @import '../styles/partials/erp.css';
-@import '../styles/partials/customAntd.css';
+@import '../styles/partials/customAntd.css'; 
 @import '../styles/partials/layout.css';
 @import '../styles/partials/auth.css';
 @import '../styles/partials/core.css';
 @import '../styles/partials/sidePanel.css';
 @import '../styles/partials/collapseBox.css';
 @import '../styles/partials/header.css';
-@import '../styles/partials/navigation.css';
+@import '../styles/partials/navigation.css';    
 @tailwind base;
 @tailwind components;
 @tailwind utilities; 

@@ -127,7 +127,7 @@ async function fetchEventData(id) {
                 {currentuserhistory.map((ticket) => {
                   
                     return (
-                    <StyledTableRow key={ticket._id}>
+                    <StyledTableRow key={Math.random()}>
                       <StyledTableCell component="th" scope="row">
                         {ticket.name}
                       </StyledTableCell>
@@ -156,8 +156,7 @@ async function fetchEventData(id) {
                   <StyledTableCell align="right">Location</StyledTableCell>
                   <StyledTableCell align="right">Booking Date</StyledTableCell>
                   <StyledTableCell align="right">Start Time</StyledTableCell>
-                  <StyledTableCell align="right">Standard Tickets</StyledTableCell>
-                  <StyledTableCell align="right">VIP Tickets</StyledTableCell>
+
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -171,9 +170,7 @@ async function fetchEventData(id) {
                       <StyledTableCell align="left">{ticket.category}</StyledTableCell>
                       <StyledTableCell align="right">{ticket.location}</StyledTableCell>
                       <StyledTableCell align="right">{ticket.bookingDate}</StyledTableCell>
-                      <StyledTableCell align="right">{ticket.startTime}</StyledTableCell>
-                      <StyledTableCell align="right">{ticket.standardTickets}</StyledTableCell>
-                      <StyledTableCell align="right">{ticket.vipTickets}</StyledTableCell>
+                      <StyledTableCell align="right">{ticket.seatno}</StyledTableCell>
                     </StyledTableRow>
                   );
                 })}
@@ -201,7 +198,7 @@ async function fetchEventData(id) {
           
         });
         if (!response.ok) {
-          throw new Error('Failed to fetch bookings');
+          throw new Error(`${response.message}`);
         }
         return response.json();
       },

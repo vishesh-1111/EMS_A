@@ -10,6 +10,7 @@ const dburl=process.env.MONGOURL||process.env.LOCAL_MONGO_URL;
 const userrouter = require('./routes/user');
 const StreamRouter = require('./routes/openai');
 const adminrouter = require('./routes/admin');
+const {seatRouter} =require('./routes/seat');
 const { eventRouter } = require('./routes/event');
 const authRouter =require('./routes/auth');
 const  Reservationrouter  = require('./routes/reservation');
@@ -74,6 +75,7 @@ app.use('/payment',PaymentRouter);
 app.use('/reservations',Reservationrouter);
 app.use('/ai',StreamRouter);
 app.use('/auth',authRouter);
+app.use('/seats',seatRouter);
 
 server.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
