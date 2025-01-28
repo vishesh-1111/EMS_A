@@ -119,8 +119,6 @@ async function fetchEventData(id) {
                   <StyledTableCell align="right">Location</StyledTableCell>
                   <StyledTableCell align="right">Booking Date</StyledTableCell>
                   <StyledTableCell align="right">Start Time</StyledTableCell>
-                  <StyledTableCell align="right">Standard Tickets</StyledTableCell>
-                  <StyledTableCell align="right">VIP Tickets</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -135,8 +133,7 @@ async function fetchEventData(id) {
                       <StyledTableCell align="right">{ticket.location}</StyledTableCell>
                       <StyledTableCell align="right">{ticket.bookingDate}</StyledTableCell>
                       <StyledTableCell align="right">{ticket.startTime}</StyledTableCell>
-                      <StyledTableCell align="right">{ticket.standardTickets}</StyledTableCell>
-                      <StyledTableCell align="right">{ticket.vipTickets}</StyledTableCell>
+
                     </StyledTableRow>
                   );
                 })}
