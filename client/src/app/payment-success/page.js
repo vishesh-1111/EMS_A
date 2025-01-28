@@ -10,12 +10,13 @@ function PaymentSuccessContent() {
   const payment_intent_id = searchParams.get("payment_intent");
   const payment_intent_client_secret = searchParams.get("payment_intent_client_secret");
   const redirect_status = searchParams.get("redirect_status");
+  const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
   useEffect(() => {
     if (amount && payment_intent_id && redirect_status === "succeeded") {
       const updateReservation = async () => {
         try {
-          const response = await fetch("http://localhost:5000/reservations/update-reservation", {
+          const response = await fetch(`${serverUrl}/reservations/update-reservation`, {
             method: "POST",
             credentials: "include",
             headers: {
