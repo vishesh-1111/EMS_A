@@ -21,6 +21,7 @@ import {useRouter} from 'next/navigation';
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 const SignInSide = () => {
+  const queryClient=  useQueryClient();
   const [creating,setIscreating] = useState(false);
   const user =useQueryClient().getQueryData(['fetchuser']);
   const router = useRouter();
@@ -56,8 +57,8 @@ const SignInSide = () => {
       }
       
       alert("Event Created Successfully");
+      queryClient.invalidateQueries({queryKey:["Events"]});
       router.push('/');
-       
       const result = await response.json();
 
       console.log("Event created successfully:", result);

@@ -53,6 +53,7 @@ eventRouter
   if(!req.admin){
     return res.status(404).json({ message: 'Auth Error Admin Not found' });
   }
+  try{
   const randomimages = (await cloudinary.api.resources_by_asset_folder('EMS1')).resources
   const newEventData = {
     ...req.body, 
@@ -60,11 +61,11 @@ eventRouter
     image : randomimages[Math.floor(Math.random()*10)]
  };
 
-   try{
      const resoncreate = await event.create(newEventData);
      return res.status(200).json({resoncreate});
    }
    catch(e){
+    console.log(e);
     return res.status(500).json({ message: 'Server error' });
    }
 
