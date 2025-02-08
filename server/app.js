@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 const cors = require('cors');
 const dburl=process.env.MONGO_URL||process.env.LOCAL_MONGO_URL;
+console.log(dburl);
 const userrouter = require('./routes/user');
 
 const adminrouter = require('./routes/admin');
@@ -23,7 +24,6 @@ app.use(require('express').json());
 app.use(session({secret:'cat',resave:true,saveUninitialized:true}));
 app.use(cors({
   origin: process.env.VERCEL_ORIGIN||process.env.LOCAL_ORIGIN,
-  
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['GET', 'POST','DELETE','PUT','OPTIONS'],
   credentials: true,  
