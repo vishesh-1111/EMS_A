@@ -1,5 +1,5 @@
 "use client"
-import { useStatStyles } from '@chakra-ui/react';
+
 import { useRouter } from 'next/navigation'; 
 import { useEffect, useState } from 'react'
 import PageLoader from '../../components/PageLoader/index.jsx'
