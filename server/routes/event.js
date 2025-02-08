@@ -30,6 +30,7 @@ eventRouter
     
         res.status(200).json({ message: 'Event booked successfully', event: eventUpdate });
       } catch (error) {
+        console.log(error);
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
       }
