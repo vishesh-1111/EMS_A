@@ -13,29 +13,12 @@ const ReservationSchema = new Schema(
       ref: 'event',
       required: true
     },
-    seats: {
-      type: Array,
-      default: [],
-    },
-    amount : {
-      type : Number,
-      required : true
-    },
-    status: {
-      type: String,
-      default: 'free'
-    },
+
     reservationDate: {
       type: Date,
       default: Date.now
     },
 
-    expiresAt: {
-      type: Date,
-      default: () => {
-        return new Date(Date.now() +  60 * 1000); 
-      }
-    }
   },
   {
     timestamps: true

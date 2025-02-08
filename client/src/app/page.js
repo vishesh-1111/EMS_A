@@ -1,14 +1,12 @@
 "use client";
 import './globals.css';
-import { use, useState } from 'react';
+import {  useState } from 'react';
 import { useRouter } from 'next/navigation'; // Import the useRouter hook
 import { useQuery } from '@tanstack/react-query'; // Import useQuery
-import NavBar from '../components/NavBar';
 import RenderAllEvents from '../components/Events'; 
 import { Layout } from 'antd';
 import HeaderContent from './Header/HeaderContainer';
-import Dashboard from '../components/history/page';
-import RenderChatBot from '../components/ChatBot'
+
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 
@@ -17,6 +15,7 @@ export default function HomePage() {
   const { Content } = Layout;
   const [isDashboardLoaded,setIsDashboardLoaded]=useState(null);
   const router = useRouter();
+
    const fetchUser = async () => {
     console.log('fetching....');
     const response = await fetch(`${serverUrl}/user/temp`, {
@@ -28,8 +27,9 @@ export default function HomePage() {
     });
       console.log(response.ok);
     if (!response.ok) {
-       router.push('/login/user');
-       return null;
+        
+      router.push('/login/user');
+      return null;
     }
     const user = await response.json();
     console.log(user);
@@ -57,10 +57,9 @@ export default function HomePage() {
     )
   }
   return (
-    <div className="">
+  
     <Layout>      
-      <Layout>
-        <HeaderContent user={user} />
+      <HeaderContent user={user} />
         <Content
           style={{
             margin: '40px auto 30px',
@@ -70,12 +69,10 @@ export default function HomePage() {
             maxWidth: 1400,
           }}
           >
-          <Dashboard user={user} setIsDashboardLoaded={setIsDashboardLoaded}></Dashboard>
           <RenderAllEvents  user={user}></RenderAllEvents>
         </Content>
 
-      </Layout>
     </Layout>
-          </div>
+         
   );
 }

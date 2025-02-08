@@ -13,13 +13,8 @@
   "description": "",
   "dependencies": {
     "@faker-js/faker": "^9.2.0",
-    "@huggingface/hub": "^1.0.0",
-    "@huggingface/inference": "^2.8.1",
-    "@langchain/community": "^0.3.24",
-    "@langchain/core": "^0.3.30",
-    "@langchain/mongodb": "^0.1.0",
-    "@langchain/openai": "^0.3.17",
     "@stripe/stripe-js": "^5.5.0",
+    "cloudinary": "^2.5.1",
     "cookie": "^1.0.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -32,13 +27,12 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.12.0",
     "mongoose": "^8.8.1",
-    "multer": "^1.4.5-lts.1",
     "next": "^15.1.6",
     "nodemon": "^3.1.7",
     "passport": "^0.7.0",
     "passport-google-oauth2": "^0.2.0",
     "passport-oauth2": "^1.8.0",
     "socket.io": "^4.8.1",
-    "stripe": "^17.5.0"
+    "zod": "^3.24.1"
   }
 }

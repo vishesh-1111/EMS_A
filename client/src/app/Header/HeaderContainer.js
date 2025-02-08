@@ -5,7 +5,7 @@ import { Avatar, Dropdown, Layout, Badge, Button } from 'antd';
 
 // import Notifications from '@/components/Notification';
 
-import { LogoutOutlined, ToolOutlined, UserOutlined } from '@ant-design/icons';
+import { LogoutOutlined, ToolOutlined, UserOutlined,UploadOutlined } from '@ant-design/icons';
 
 import useLanguage from '../../components/uselanguage';
 import { useEffect, useState } from 'react';
@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 export default function HeaderContent({user}) {
   const { Header } = Layout;
   const navigate = useRouter();
-
+  
   
   const translate = useLanguage();
 
@@ -63,6 +63,74 @@ export default function HeaderContent({user}) {
         </Link>
       ),
     },
+    
+    {
+      icon: <ToolOutlined />,
+      key: 'settingApp',
+      label: <Link href={'/settings'}>{translate('app_settings')}</Link>,
+    },
+
+    {
+      type: 'divider',
+    },
+
+    {
+      icon: <LogoutOutlined />,
+      key: 'logout',
+      label: <Link href={'/logout'}>{translate('logout')}</Link>,
+    },
+  ];
+  const guestitems = [
+    {
+      label: <ProfileDropdown className="headerDropDownMenu" />,
+      key: 'ProfileDropdown',
+    },
+    {
+      type: 'divider',
+    },
+    {
+      icon: <UserOutlined />,
+      key: 'settingProfile',
+      label: (
+        <Link href={'/profile'}>
+          <DropdownMenu text={translate('profile_settings')} />
+        </Link>
+      ),
+    },
+    
+    {
+      type: 'divider',
+    },
+
+  ];
+
+  const adminitems = [
+    {
+      label: <ProfileDropdown className="headerDropDownMenu" />,
+      key: 'ProfileDropdown',
+    },
+    {
+      type: 'divider',
+    },
+    {
+      icon: <UserOutlined />,
+      key: 'settingProfile',
+      label: (
+        <Link href={'/profile'}>
+          <DropdownMenu text={translate('profile_settings')} />
+        </Link>
+      ),
+    },
+    
+      {
+        icon: <UploadOutlined />,
+        key: 'create-event',
+        label: (
+          <Link href={'/create-event'}>
+          <DropdownMenu text={translate('Create Event')} />
+        </Link>
+      ),
+    },
     {
       icon: <ToolOutlined />,
       key: 'settingApp',
@@ -91,14 +159,21 @@ export default function HeaderContent({user}) {
         gap: ' 15px',
       }}
     >
-      <Dropdown
-        menu={{
-          items,
-        }}
+    
+        
+        <Dropdown
+        menu={
+          user.name === 'guest'
+            ? { items: guestitems }
+            : user.role === 'user'
+            ? { items: items }
+            : { items: adminitems }
+        }
         trigger={['click']}
         placement="bottomRight"
         stye={{ width: '280px', float: 'right' }}
-      >
+        >
+      
         {/* <Badge dot> */}
         <Avatar
           className="last"
@@ -117,13 +192,10 @@ export default function HeaderContent({user}) {
         {/* </Badge> */}
       </Dropdown>
 
-      {/* <AppsButton /> */}
+ 
 
      
     </Header>
   );
 }
 
-//  console.log(
-//    '🚀 Welcome href IDURAR ERP CRM! Did you know that we also offer commercial customization services? Contact us at hello@idurarapp.com for more information.'
-//  );

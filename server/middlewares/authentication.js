@@ -3,7 +3,7 @@ var jwt = require('jsonwebtoken');
 function isUser(req,res,next){
   
 const token =req.cookies['token'];
-//console.log('midlleware',token);
+console.log('middleware',token);
 if(!token){
    return next();
 }

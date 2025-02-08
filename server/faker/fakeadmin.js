@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const { admin } =require("../models/admin");
 
 require('dotenv').config();
-const MONGOURL = process.env.MONGOURL;
+const MONGOURL = process.env.MONGO_URL;
+console.log(MONGOURL)
 async function createAdmin() {
     try{
         await mongoose.connect(MONGOURL);

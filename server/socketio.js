@@ -15,6 +15,27 @@ const io = new Server(server, {
      },
    });
       
-   module.exports={
-    io,server,app
-   }
+   
+   
+   
+   io.on('connection', (socket) => {
+    console.log('A user connected',socket.id);
+    
+    socket.on('reservationmade',()=>{
+      console.log('client calling for making reservation');
+  
+        io.emit('reservationmade',()=>{
+         console.log('Admin received the status');
+        });
+    })
+  
+  
+    socket.on('disconnect', () => {
+      console.log('User disconnected');
+    });
+  });
+
+module.exports={
+ io,server,app
+}
+   

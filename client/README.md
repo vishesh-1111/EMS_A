@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Event Management Platform
+Overview
+This project is a full-stack event management platform built as part of an assignment. The platform allows users to create, manage, and view events. It includes user authentication, event creation and management tools, and real-time updates for attendees. The platform is deployed using free-tier hosting services.
 
-## Getting Started
+Features
+Frontend
+User Authentication: Users can register and log in. There is also an option for "Guest Login" to access limited features.
 
-First, run the development server:
+Event Dashboard: Displays a list of upcoming and past events with filters for categories and dates.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Event Creation: A form to create an event with fields like event name, description, date/time, and more.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Real-Time Attendee List: Shows the number of attendees for each event in real-time.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Responsive Design: Ensures the platform works seamlessly on all devices.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Backend
+Authentication API: Uses JWT for secure authentication.
 
-## Learn More
+Event Management API: CRUD operations for events with ownership restrictions.
 
-To learn more about Next.js, take a look at the following resources:
+Real-Time Updates: Uses WebSockets for real-time updates.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Database: Stores event and user data efficiently.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Technologies Used
+Frontend: Next.js
 
-## Deploy on Vercel
+Backend: Node.js with Express.js
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Database: MongoDB
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Real-Time Communication: Socket.IO
+
+Hosting:
+
+Frontend: Vercel
+
+Backend: Render or Railway
+
+Database: MongoDB Atlas
+
+Image Hosting: Cloudinary Free Tier
+
+Installation
+Prerequisites
+Node.js and npm installed on your machine.
+
+MongoDB Atlas account for database hosting.
+
+Cloudinary account for image hosting.
+
+
+
+
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
