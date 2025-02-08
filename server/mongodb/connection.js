@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 require('dotenv').config()
-const dburl=(process.env.AIMONGOURL);
+
 
 
 async function connectDB(url){
