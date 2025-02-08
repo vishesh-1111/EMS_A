@@ -15,7 +15,7 @@ import Typography from "@mui/material/Typography";
 import { Alert, Grid2 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-const {useRouter} = require('next/navigation');
+import {useRouter} from 'next/navigation';
 
 
 
