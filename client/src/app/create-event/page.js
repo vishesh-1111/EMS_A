@@ -18,6 +18,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import {useRouter} from 'next/navigation';
 
 
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 const SignInSide = () => {
   const [creating,setIscreating] = useState(false);
@@ -41,7 +42,7 @@ const SignInSide = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/events", {
+      const response = await fetch(`${serverUrl}/events`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

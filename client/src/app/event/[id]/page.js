@@ -7,7 +7,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@mui/material';
 import { socket } from '../../../socket';
 import {useRouter} from 'next/navigation'
- 
+import cloudinaryLoader from "../../../../utils/cloudinaryLoader";
+
 import {CategorySharp,DescriptionTwoTone,Tag,LocationOnSharp} from '@mui/icons-material'
 import {
   CircleDollarSign,
@@ -179,7 +180,8 @@ async function bookEvent() {
             height={1000}
             priority={true}
             loading='eager'
-              className="h-full object-cover"
+            // loader={cloudinaryLoader}
+            className="h-full object-cover"
           />
 
           <div className="flex w-full flex-col gap-8 p-5 md:p-10">

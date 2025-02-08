@@ -41,7 +41,8 @@ export function EventCard({idx,event, user, onDelete }) {
           <Link href={`/event/${event._id}`} passHref>
             <CardMedia
               component="img"
-              height="140"
+              height={140}
+              width={140}
               fetchPriority='auto'
                src={event.image.secure_url} 
               alt="Event image"
@@ -93,7 +94,7 @@ export function EventCard({idx,event, user, onDelete }) {
   );
 }
 
-export default function RenderAllEvents({ user }) {
+export default function   RenderAllEvents({ user }) {
   const queryClient = useQueryClient();
   const [textSearch, setTextSearch] = useState('');
 
